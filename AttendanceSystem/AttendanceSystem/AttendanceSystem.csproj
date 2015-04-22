@@ -41,10 +41,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -123,10 +131,49 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AASApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginApiController.cs" />
+    <Compile Include="Controllers\SecurityApiController.cs" />
+    <Compile Include="Controllers\TestApiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Errors\ApiErrorActionResult.cs" />
+    <Compile Include="Infrastructure\Errors\BaseAASException.cs" />
+    <Compile Include="Infrastructure\Errors\ApiExceptionHandler.cs" />
+    <Compile Include="Infrastructure\Errors\InvalidTokenException.cs" />
+    <Compile Include="Infrastructure\Errors\LoginErrorException.cs" />
+    <Compile Include="Infrastructure\Errors\TokenExchangeFailedException.cs" />
+    <Compile Include="Infrastructure\Errors\TokenExpiredException.cs" />
+    <Compile Include="Infrastructure\Filters\TokenExchangeFilterAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\TokenRequiredFilterAttribute.cs" />
+    <Compile Include="Infrastructure\Implementation\AASLogic.cs" />
+    <Compile Include="Infrastructure\Interfaces\IAASLogic.cs" />
+    <Compile Include="Infrastructure\Security\Token.cs" />
+    <Compile Include="Infrastructure\Utils\Config.cs" />
+    <Compile Include="Infrastructure\Utils\PasswordHashProvider.cs" />
+    <Compile Include="Models\AASContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AASContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AASContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AASContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AASContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AASContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Admin.cs">
+      <DependentUpon>AASContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LogicModel\LoginModel.cs" />
+    <Compile Include="Models\LogicModel\LoginRequestType.cs" />
+    <Compile Include="Models\Student.cs">
+      <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -139,6 +186,30 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\AASContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AASContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\AASContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AASContext.Context.cs</LastGenOutput>
+      <DependentUpon>AASContext.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\AASContext.edmx.diagram">
+      <DependentUpon>AASContext.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\AASContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AASContext.edmx</DependentUpon>
+      <LastGenOutput>AASContext.cs</LastGenOutput>
+    </Content>
+    <None Include="key.private">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="key.public">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -169,7 +240,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -177,6 +247,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
