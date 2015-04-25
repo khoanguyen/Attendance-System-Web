@@ -10,11 +10,19 @@ namespace AttendanceSystem.Infrastructure.Filters
 {
     public class TokenRequiredFilterAttribute : ActionFilterAttribute
     {
+        public string RequiredUserType { get; set; }        
+
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             var token = Token.ReadFromHeader(actionContext.Request);
             if (token == null) throw new InvalidTokenException();
-            token.Validate();            
+            token.Validate();
+            
+            if (!string.IsNullOrEmpty(RequiredUserType))
+            {
+                if (token.UserType.ToLower().Trim() != RequiredUserType.ToLower().Trim())
+                    throw new InvalidTokenException();
+            }
         }
     }
 }

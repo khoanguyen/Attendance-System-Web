@@ -170,7 +170,7 @@ namespace AttendanceSystem.Infrastructure.Security
 
         private static DSA GetDsa(string filename)
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", filename);
             var key = string.Empty;
             using (var reader = File.OpenText(path))
             {
