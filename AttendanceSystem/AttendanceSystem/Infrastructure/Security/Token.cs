@@ -93,7 +93,7 @@ namespace AttendanceSystem.Infrastructure.Security
 
         public bool IsExchangable()
         {
-            return IsExpired() && DateTimeOffset.Now < (this.Expiration + TimeSpan.FromSeconds(Config.TokenExchangeLimit));
+            return DateTimeOffset.Now < (this.Expiration + TimeSpan.FromSeconds(Config.TokenExchangeLimit));
         }
 
         private static Token DeserializeToken(byte[] bytes)
@@ -124,17 +124,7 @@ namespace AttendanceSystem.Infrastructure.Security
             }
 
             var bytes = Convert.FromBase64String(refinedData);
-            return bytes;
-            //if (data.Length % 2 == 1)
-            //    throw new InvalidSecurityHeaderException();
-
-            //var result = new byte[data.Length / 2];
-            //for (int i = 0, j = 0; i < data.Length; i += 2, j++)
-            //{
-            //    var bytestr = data[i] + "" + data[i + 1];
-            //    result[j] = byte.Parse(bytestr, NumberStyles.HexNumber); 
-            //}
-            //return result;
+            return bytes;           
         }
 
         private static string ConvertToString(byte[] bytes)
@@ -144,7 +134,6 @@ namespace AttendanceSystem.Infrastructure.Security
                                    .Replace('+', '-')
                                    .Replace('/', '_');
             return result;
-            //return string.Join("", bytes.Select(b => string.Format("{0:X2}", b)).ToArray());
         }
 
         private static void SignToken(Token token)

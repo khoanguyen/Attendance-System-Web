@@ -64,10 +64,14 @@
   <ItemGroup>
     <Build Include="Tables\Admin.sql" />
     <Build Include="Tables\Student.sql" />
+    <Build Include="Tables\Class.sql" />
+    <Build Include="Tables\ClassSession.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AASDB.Dev.publish.xml" />
     <None Include="SampleData\AdminData.sql" />
+    <None Include="SampleData\Class.sql" />
+    <None Include="AASDB.Remote.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Env">

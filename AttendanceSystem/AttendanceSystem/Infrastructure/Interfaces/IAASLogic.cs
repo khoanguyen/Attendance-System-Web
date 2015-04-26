@@ -1,4 +1,5 @@
-﻿using AttendanceSystem.Models.LogicModel;
+﻿using AttendanceSystem.Models;
+using AttendanceSystem.Models.LogicModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace AttendanceSystem.Infrastructure.Interfaces
     public interface IAASLogic
     {
         string ExchangeToken(string tokenString);
-        string SignIn(LoginModel model);
+        string SignIn(LoginLogicModel model);
+
+        IEnumerable<Class> GetClasses();
     }
 }

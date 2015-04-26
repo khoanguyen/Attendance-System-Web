@@ -14,7 +14,7 @@ namespace AttendanceSystem.Controllers
     {
 
         [HttpPost, Route("login")]
-        public IHttpActionResult Login([FromBody]LoginModel model)
+        public IHttpActionResult Login([FromBody]LoginLogicModel model)
         {
             var result = Logic.SignIn(model);
             return Json(result);

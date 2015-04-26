@@ -24,7 +24,7 @@ namespace AttendanceSystem.Infrastructure.Implementation
             Instance = new AASLogic();
         }
 
-        public string SignIn(Models.LogicModel.LoginModel model)
+        public string SignIn(Models.LogicModel.LoginLogicModel model)
         {
             switch (model.RequestType)
             {
@@ -33,7 +33,7 @@ namespace AttendanceSystem.Infrastructure.Implementation
             }
         }
 
-        private string SignInAdmin(LoginModel model)
+        private string SignInAdmin(LoginLogicModel model)
         {
             using (var context = new AASDBContext())
             {
@@ -72,6 +72,18 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 throw new TokenExpiredException();
 
             return token.Exchange().ToString();
+        }
+
+
+        public IEnumerable<Class> GetClasses()
+        {
+            using (var context = new AASDBContext())
+            {
+                var classes = context.Classes
+                                     .Include("ClassSessions")
+                                     .ToArray();
+                return classes;
+            }
         }
     }
 }

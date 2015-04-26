@@ -5,8 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e085c37474c943579728eb3a30b4fc4b" Name="Diagram1">
-        <EntityTypeShape EntityType="AASDBModel.Admin" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AASDBModel.Student" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AASDBModel.Admin" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="AASDBModel.Class" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="AASDBModel.ClassSession" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="AASDBModel.Student" Width="1.5" PointX="2.75" PointY="4.75" />
+        <AssociationConnector Association="AASDBModel.FK_ClassSession_Class" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

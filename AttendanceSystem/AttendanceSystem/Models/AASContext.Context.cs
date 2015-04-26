@@ -18,6 +18,7 @@ namespace AttendanceSystem.Models
         public AASDBContext()
             : base("name=AASDBContext")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -26,6 +27,8 @@ namespace AttendanceSystem.Models
         }
     
         public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<Class> Classes { get; set; }
+        public virtual DbSet<ClassSession> ClassSessions { get; set; }
         public virtual DbSet<Student> Students { get; set; }
     }
 }

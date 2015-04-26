@@ -1,4 +1,6 @@
 ﻿using AttendanceSystem.Infrastructure.Errors;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,7 @@ namespace AttendanceSystem
             //    routeTemplate: "api/{controller}/{id}",
             //    defaults: new { id = RouteParameter.Optional }
             //);
-            config.Services.Replace(typeof(IExceptionHandler), new ApiExceptionHandler());
+            
         }
     }
 }

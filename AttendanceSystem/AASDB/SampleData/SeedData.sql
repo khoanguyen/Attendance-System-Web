@@ -13,4 +13,5 @@ Post-Deployment Script Template
 IF ('$(Env)' = 'Dev')
 BEGIN
 	:r .\AdminData.sql
+	:r .\Class.sql
 END
