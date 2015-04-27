@@ -12,10 +12,11 @@ namespace AttendanceSystem.Models.LogicModel
         public int Id { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public DayOfWeek WeekDay { get; set; }        
+        public DayOfWeek Weekday { get; set; }        
         public string Room { get; set; }
+
+        [JsonProperty(PropertyName = "__type")]
+        public string TypeName { get { return "ClassSession"; } }
 
         public ClassSessionLogicModel() { }
         public ClassSessionLogicModel(ClassSession session)
@@ -23,7 +24,7 @@ namespace AttendanceSystem.Models.LogicModel
             Id = session.Id;
             StartTime = session.StartTime;
             EndTime = session.EndTime;
-            WeekDay = GetDayOfWeek(session.Weekday);
+            Weekday = GetDayOfWeek(session.Weekday);
             Room = session.Room;
         }
 
@@ -39,6 +40,18 @@ namespace AttendanceSystem.Models.LogicModel
                 case "sat": return DayOfWeek.Saturday;
                 default: return DayOfWeek.Sunday;
             }
+        }
+
+        public ClassSession ToEntity()
+        {
+            return new ClassSession
+            {
+                Id = this.Id,
+                Weekday = this.Weekday.ToString().Substring(0, 3),
+                StartTime = this.StartTime,
+                EndTime = this.EndTime,
+                Room = this.Room
+            };
         }
     }
 }

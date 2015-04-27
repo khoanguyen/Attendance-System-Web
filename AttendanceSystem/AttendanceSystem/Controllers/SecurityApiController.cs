@@ -17,14 +17,14 @@ namespace AttendanceSystem.Controllers
         public IHttpActionResult Login([FromBody]LoginLogicModel model)
         {
             var result = Logic.SignIn(model);
-            return Json(result);
+            return JsonEx(result);
         }
 
         [HttpPost, Route("exchange"), TokenExchangeFilter]
         public IHttpActionResult Exchange()
         {
             var tokenString = Token.ReadTokenStringFromHeader(this.Request);
-            return Json(Logic.ExchangeToken(tokenString));
+            return JsonEx(Logic.ExchangeToken(tokenString));
         }
     }
 }

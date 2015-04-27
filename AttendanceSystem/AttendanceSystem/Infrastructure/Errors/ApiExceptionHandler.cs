@@ -21,9 +21,7 @@ namespace AttendanceSystem.Infrastructure.Errors
             }
             else
             {
-                context.Result = new System.Web.Http.Results.JsonResult<string>(context.Exception.ToString(),
-                                    GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings,
-                                    Encoding.UTF8, context.Request);
+                base.Handle(context);
             }
         }
     }

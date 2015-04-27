@@ -9,9 +9,9 @@ namespace AttendanceSystem.Infrastructure.Errors
     public class InvalidTokenException : BaseAASException
     {
 
-        public override int ErrorCode
+        public override ErrorCode ErrorCode
         {
-            get { return 2; }
+            get { return ErrorCode.InvalidToken; }
         }
 
         public override System.Net.HttpStatusCode HttpCode

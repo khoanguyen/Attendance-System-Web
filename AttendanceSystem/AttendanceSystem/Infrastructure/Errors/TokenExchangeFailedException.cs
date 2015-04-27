@@ -9,9 +9,9 @@ namespace AttendanceSystem.Infrastructure.Errors
     {
         public TokenExchangeFailedException() : base("Token Exchange Failed") { }
 
-        public override int ErrorCode
+        public override ErrorCode ErrorCode
         {
-            get { return 4; }
+            get { return ErrorCode.TokenExchangeFailed; }
         }
     }
 }

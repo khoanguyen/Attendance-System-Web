@@ -34,7 +34,33 @@ namespace AttendanceSystem.Models.LogicModel
         public DateTime EndDate { get; set; }
         public TimeSpan? ExcusedTime { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "__type")]
+        public string TypeName { get { return "Class"; } }
+
+        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ClassSessionLogicModel> Sessions { get; set; }
+
+        public Class ToEntity()
+        {
+            var result = new Class
+            {
+                Id = this.Id,
+                Name = this.Name,
+                ProfessorName = this.ProfessorName,
+                StartDate = this.StartDate,
+                EndDate = this.EndDate,
+                ExcusedTime = this.ExcusedTime
+            };
+
+            foreach (var sessionModel in this.Sessions)
+            {
+                var sessionObj = sessionModel.ToEntity();
+                result.ClassSessions.Add(sessionObj);
+                sessionObj.Class = result;
+                sessionObj.ClassId = result.Id;
+            }
+
+            return result;
+        }
     }
 }

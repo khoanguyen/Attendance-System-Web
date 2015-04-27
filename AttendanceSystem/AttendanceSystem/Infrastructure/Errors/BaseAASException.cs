@@ -8,7 +8,7 @@ namespace AttendanceSystem.Infrastructure.Errors
 {
     public abstract class BaseAASException : Exception
     {
-        public abstract int ErrorCode { get; }
+        public abstract ErrorCode ErrorCode { get; }
 
         public virtual HttpStatusCode HttpCode
         {

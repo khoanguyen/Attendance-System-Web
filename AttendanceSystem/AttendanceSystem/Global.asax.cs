@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
@@ -17,6 +18,7 @@ namespace AttendanceSystem
     {
         protected void Application_Start()
         {
+            CustomConfig(GlobalConfiguration.Configuration);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -28,8 +30,9 @@ namespace AttendanceSystem
         private void CustomConfig(HttpConfiguration config)
         {
             config.Services.Replace(typeof(IExceptionHandler), new ApiExceptionHandler());
+
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
-            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;            
+            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using System.Web.Http.Results;
 
 namespace AttendanceSystem.Controllers
 {  
@@ -19,6 +20,11 @@ namespace AttendanceSystem.Controllers
         public AASApiController()
         {
             Logic = AASLogic.Instance;
+        }
+
+        protected internal JsonResult<T> JsonEx<T>(T content)
+        {
+            return Json<T>(content, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
         }
 
     }

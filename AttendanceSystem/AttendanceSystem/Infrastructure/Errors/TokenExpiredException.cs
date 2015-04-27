@@ -7,9 +7,9 @@ namespace AttendanceSystem.Infrastructure.Errors
 {
     public class TokenExpiredException : BaseAASException
     {
-        public override int ErrorCode
+        public override ErrorCode ErrorCode
         {
-            get { return 3; }
+            get { return ErrorCode.TokenExpired; }
         }
 
         public override System.Net.HttpStatusCode HttpCode

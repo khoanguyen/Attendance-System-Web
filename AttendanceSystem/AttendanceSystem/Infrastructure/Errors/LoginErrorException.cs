@@ -8,9 +8,9 @@ namespace AttendanceSystem.Infrastructure.Errors
 {
     public class LoginErrorException : BaseAASException
     {
-        public override int ErrorCode
+        public override ErrorCode ErrorCode
         {
-            get { return 1; }
+            get { return ErrorCode.LoginError; }
         }
 
         public override System.Net.HttpStatusCode HttpCode

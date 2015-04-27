@@ -145,8 +145,10 @@
     <Compile Include="Infrastructure\Errors\ApiErrorActionResult.cs" />
     <Compile Include="Infrastructure\Errors\BaseAASException.cs" />
     <Compile Include="Infrastructure\Errors\ApiExceptionHandler.cs" />
+    <Compile Include="Infrastructure\Errors\ErrorCode.cs" />
     <Compile Include="Infrastructure\Errors\InvalidTokenException.cs" />
     <Compile Include="Infrastructure\Errors\LoginErrorException.cs" />
+    <Compile Include="Infrastructure\Errors\NotFoundException.cs" />
     <Compile Include="Infrastructure\Errors\TokenExchangeFailedException.cs" />
     <Compile Include="Infrastructure\Errors\TokenExpiredException.cs" />
     <Compile Include="Infrastructure\Filters\TokenExchangeFilterAttribute.cs" />
