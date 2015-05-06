@@ -12,20 +12,14 @@ namespace AttendanceSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Student
+    public partial class Ticket
     {
-        public Student()
-        {
-            this.Tickets = new HashSet<Ticket>();
-        }
-    
         public int Id { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Salt { get; set; }
-        public string DisplayName { get; set; }
-        public byte Status { get; set; }
+        public int StudentId { get; set; }
+        public int ClassId { get; set; }
+        public byte[] QrCode { get; set; }
     
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual Class Class { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

@@ -30,5 +30,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassSession> ClassSessions { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
     }
 }

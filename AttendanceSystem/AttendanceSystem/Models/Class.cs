@@ -17,6 +17,7 @@ namespace AttendanceSystem.Models
         public Class()
         {
             this.ClassSessions = new HashSet<ClassSession>();
+            this.Tickets = new HashSet<Ticket>();
         }
     
         public int Id { get; set; }
@@ -25,7 +26,9 @@ namespace AttendanceSystem.Models
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public Nullable<System.TimeSpan> ExcusedTime { get; set; }
+        public bool IsArchived { get; set; }
     
         public virtual ICollection<ClassSession> ClassSessions { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

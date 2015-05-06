@@ -142,6 +142,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AdminStatus.cs" />
     <Compile Include="Infrastructure\Errors\ApiErrorActionResult.cs" />
     <Compile Include="Infrastructure\Errors\BaseAASException.cs" />
     <Compile Include="Infrastructure\Errors\ApiExceptionHandler.cs" />
@@ -156,6 +157,8 @@
     <Compile Include="Infrastructure\Implementation\AASLogic.cs" />
     <Compile Include="Infrastructure\Interfaces\IAASLogic.cs" />
     <Compile Include="Infrastructure\Security\Token.cs" />
+    <Compile Include="Infrastructure\StudentStatus.cs" />
+    <Compile Include="Infrastructure\UserType.cs" />
     <Compile Include="Infrastructure\Utils\Config.cs" />
     <Compile Include="Infrastructure\Utils\PasswordHashProvider.cs" />
     <Compile Include="Models\AASContext.Context.cs">
@@ -187,6 +190,9 @@
     <Compile Include="Models\LogicModel\LoginLogicModel.cs" />
     <Compile Include="Models\LoginRequestType.cs" />
     <Compile Include="Models\Student.cs">
+      <DependentUpon>AASContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ticket.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

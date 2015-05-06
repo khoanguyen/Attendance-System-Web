@@ -66,12 +66,14 @@
     <Build Include="Tables\Student.sql" />
     <Build Include="Tables\Class.sql" />
     <Build Include="Tables\ClassSession.sql" />
+    <Build Include="Tables\Ticket.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AASDB.Dev.publish.xml" />
     <None Include="SampleData\AdminData.sql" />
     <None Include="SampleData\Class.sql" />
     <None Include="AASDB.Remote.publish.xml" />
+    <None Include="SampleData\StudentData.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Env">

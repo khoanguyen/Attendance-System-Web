@@ -26,6 +26,7 @@
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="ExcusedTime" Type="time" Precision="7" />
+          <Property Name="IsArchived" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ClassSession">
           <Key>
@@ -49,8 +50,19 @@
           <Property Name="DisplayName" Type="nvarchar" MaxLength="256" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
         </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="ClassId" Type="int" Nullable="false" />
+          <Property Name="QrCode" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
         <Association Name="FK_ClassSession_Class">
-          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ClassSession" Type="Self.ClassSession" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Class">
@@ -61,14 +73,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Ticket_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="AASDBModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassSession" EntityType="Self.ClassSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ClassSession_Class" Association="Self.FK_ClassSession_Class">
             <End Role="Class" EntitySet="Class" />
             <End Role="ClassSession" EntitySet="ClassSession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Class" Association="Self.FK_Ticket_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Student" Association="Self.FK_Ticket_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Ticket" EntitySet="Ticket" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -83,6 +132,15 @@
           <AssociationSet Name="FK_ClassSession_Class" Association="AASDBModel.FK_ClassSession_Class">
             <End Role="Class" EntitySet="Classes" />
             <End Role="ClassSession" EntitySet="ClassSessions" />
+          </AssociationSet>
+          <EntitySet Name="Tickets" EntityType="AASDBModel.Ticket" />
+          <AssociationSet Name="FK_Ticket_Class" Association="AASDBModel.FK_Ticket_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Student" Association="AASDBModel.FK_Ticket_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Ticket" EntitySet="Tickets" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Admin">
@@ -106,7 +164,9 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ExcusedTime" Type="Time" Precision="7" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ClassSessions" Relationship="AASDBModel.FK_ClassSession_Class" FromRole="Class" ToRole="ClassSession" />
+          <NavigationProperty Name="Tickets" Relationship="AASDBModel.FK_Ticket_Class" FromRole="Class" ToRole="Ticket" />
         </EntityType>
         <EntityType Name="ClassSession">
           <Key>
@@ -130,9 +190,12 @@
           <Property Name="Salt" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="DisplayName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Tickets" Relationship="AASDBModel.FK_Ticket_Student" FromRole="Student" ToRole="Ticket" />
         </EntityType>
         <Association Name="FK_ClassSession_Class">
-          <End Type="AASDBModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="AASDBModel.Class" Role="Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="AASDBModel.ClassSession" Role="ClassSession" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Class">
@@ -140,6 +203,45 @@
             </Principal>
             <Dependent Role="ClassSession">
               <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="QrCode" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Class" Relationship="AASDBModel.FK_Ticket_Class" FromRole="Ticket" ToRole="Class" />
+          <NavigationProperty Name="Student" Relationship="AASDBModel.FK_Ticket_Student" FromRole="Ticket" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Ticket_Class">
+          <End Type="AASDBModel.Class" Role="Class" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AASDBModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Student">
+          <End Type="AASDBModel.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AASDBModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -164,6 +266,7 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="AASDBModel.Class">
               <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
                 <ScalarProperty Name="ExcusedTime" ColumnName="ExcusedTime" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -193,6 +296,16 @@
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="AASDBModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="QrCode" ColumnName="QrCode" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

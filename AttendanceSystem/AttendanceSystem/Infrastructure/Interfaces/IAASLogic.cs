@@ -17,5 +17,15 @@ namespace AttendanceSystem.Infrastructure.Interfaces
         int AddClass(Class classObj);
         void UpdateClass(Class classObj);
         void DeleteClass(int id);
+        IEnumerable<Class> GetAvailableClassForStudent(string userName);
+        IEnumerable<Class> GetRegisteredClassForStudent(string userName);
+
+        IEnumerable<Admin> GetAdmins();
+        Admin GetAdmin(string username);
+        void AddAdmin(Admin admin);
+        void DeleteAdmin(string userName);
+        void UpdateAdmin(Admin admin);
+
+        Student GetStudent(string email);
     }
 }

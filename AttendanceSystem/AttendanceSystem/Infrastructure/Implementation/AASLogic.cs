@@ -15,7 +15,7 @@ namespace AttendanceSystem.Infrastructure.Implementation
     public class AASLogic : IAASLogic
     {
         private const string InvalidRequestTypeMessage = "Invalid Login Request Type";
-        private const string InvalidUsernameOrPassword = "Invalid Username or Password";
+        private const string InvalidUsernameOrPassword = "Invalid Username or Password";        
 
         public static AASLogic Instance { get; private set; }
 
@@ -24,12 +24,37 @@ namespace AttendanceSystem.Infrastructure.Implementation
             Instance = new AASLogic();
         }
 
-        public string SignIn(Models.LogicModel.LoginLogicModel model)
+
+        #region Private helpers
+
+        private string ComposeToken(string username, string userType)
         {
-            switch (model.RequestType)
+            var expiration = DateTimeOffset.Now + TimeSpan.FromSeconds(Config.TokenExpiration);
+            var token = Token.CreateAndSign(username, userType, expiration);
+            return token.ToString();
+        }
+
+        private string SignInStudent(LoginLogicModel model)
+        {
+            using (var context = new AASDBContext())
             {
-                case LoginRequestType.AdminLogin: return SignInAdmin(model);
-                default: return InvalidRequestTypeMessage;
+                var student = context.Students.SingleOrDefault(a => a.Email == model.Username);
+                if (student == null)
+                    throw new LoginErrorException();
+
+                if (string.IsNullOrWhiteSpace(student.Salt))
+                {
+                    student.Salt = PasswordHashProvider.GenerateSalt();
+                    student.Password = PasswordHashProvider.ComputePasswordHash(student.Password.Trim(), student.Salt);
+                    context.SaveChanges();
+                }
+
+                var hash = PasswordHashProvider.ComputePasswordHash(model.Password, student.Salt);
+
+                if (student.Password != hash)
+                    throw new LoginErrorException();
+
+                return ComposeToken(model.Username, UserType.StudentUserType);
             }
         }
 
@@ -38,11 +63,11 @@ namespace AttendanceSystem.Infrastructure.Implementation
             using (var context = new AASDBContext())
             {
                 var admin = context.Admins.SingleOrDefault(a => a.Username == model.Username);
-                if (admin == null) 
+                if (admin == null)
                     throw new LoginErrorException();
 
                 if (string.IsNullOrWhiteSpace(admin.Salt))
-                {                    
+                {
                     admin.Salt = PasswordHashProvider.GenerateSalt();
                     admin.Password = PasswordHashProvider.ComputePasswordHash(admin.Password.Trim(), admin.Salt);
                     context.SaveChanges();
@@ -53,16 +78,21 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 if (admin.Password != hash)
                     throw new LoginErrorException();
 
-                return ComposeToken(model.Username, "Admin");
+                return ComposeToken(model.Username, UserType.AdminUserType);
             }
         }
+        #endregion
 
-        private string ComposeToken(string username, string userType)
+
+        public string SignIn(Models.LogicModel.LoginLogicModel model)
         {
-            var expiration = DateTimeOffset.Now + TimeSpan.FromSeconds(Config.TokenExpiration);
-            var token = Token.CreateAndSign(username, userType, expiration);
-            return token.ToString();
-        }
+            switch (model.RequestType)
+            {
+                case LoginRequestType.AdminLogin: return SignInAdmin(model);
+                case LoginRequestType.StudentLogin: return SignInStudent(model);
+                default: return InvalidRequestTypeMessage;
+            }
+        }        
 
         public string ExchangeToken(string tokenString)
         {
@@ -79,7 +109,8 @@ namespace AttendanceSystem.Infrastructure.Implementation
         {
             using (var context = new AASDBContext())
             {
-                var classes = context.Classes                                     
+                var classes = context.Classes
+                                     .Where(c => c.IsArchived == false)
                                      .ToArray();
                 return classes;
             }
@@ -166,5 +197,135 @@ namespace AttendanceSystem.Infrastructure.Implementation
             }
         }
 
+
+        public Student GetStudent(string email)
+        {
+            using (var context = new AASDBContext())
+            {
+                var student = context.Students.SingleOrDefault(s => s.Email == email);
+
+                if (student == null)
+                    throw new NotFoundException();
+
+                return student;
+            }
+        }
+
+
+        public IEnumerable<Class> GetAvailableClassForStudent(string userName)
+        {
+            using (var context = new AASDBContext())
+            {
+                var now = DateTime.Now.Date;
+                var student = GetStudent(userName);
+                var studentId = student.Id;
+                return context.Classes
+                              .Include("ClassSessions")
+                              .Where(c => c.StartDate <= now &&
+                                                         now <= c.EndDate &&
+                                                         c.IsArchived == false &&
+                                                         !c.Tickets.Any(t => t.StudentId == studentId && t.ClassId == c.Id))
+                              .ToArray()
+                              .Select(c =>
+                              {
+                                  c.Tickets = null;
+                                  return c;
+                              });
+            }
+        }
+
+        public IEnumerable<Class> GetRegisteredClassForStudent(string userName)
+        {
+            using (var context = new AASDBContext())
+            {
+                var now = DateTime.Now.Date;
+                var student = GetStudent(userName);
+                var studentId = student.Id;
+                return context.Classes
+                              .Include("ClassSessions")                              
+                              .Where(c => c.StartDate <= now &&
+                                                         now <= c.EndDate &&
+                                                         c.IsArchived == false &&
+                                                         c.Tickets.Any(t => t.StudentId == studentId && t.ClassId == c.Id))
+                              .ToArray()
+                              .Select(c =>
+                              {
+                                  c.Tickets = null;
+                                  return c;
+                              });
+            }
+        }
+
+
+        public IEnumerable<Admin> GetAdmins()
+        {
+            using (var context = new AASDBContext())
+            {
+                return context.Admins.Where(a => a.Status < AdminStatus.TrumCuoi);
+            }
+        }
+
+        public Admin GetAdmin(string username)
+        {
+            using (var context = new AASDBContext())
+            {
+                var admin = context.Admins.Where(a => a.Status < AdminStatus.TrumCuoi)
+                                          .SingleOrDefault(a => a.Username == username);
+
+                if (admin == null)
+                    throw new NotFoundException();
+
+                return admin;
+            }   
+        }
+
+        public void AddAdmin(Admin admin)
+        {
+            using (var context = new AASDBContext())
+            {
+                admin.Status = AdminStatus.Active;
+                var userName = admin.Username;
+                var existing = context.Admins.Where(a => a.Status < AdminStatus.TrumCuoi)
+                                             .SingleOrDefault(a => a.Username == userName);
+                if (existing != null)
+                {
+                    existing.AdminName = admin.AdminName;
+                    existing.Status = admin.Status;
+                    existing.Salt = admin.Salt;
+                    existing.Password = admin.Password;
+                }
+                else
+                {
+                    context.Admins.Add(admin);
+                }
+
+                context.SaveChanges();                
+            }  
+        }
+
+        public void DeleteAdmin(string username)
+        {
+            using (var context = new AASDBContext())
+            {
+                var admin = GetAdmin(username);
+                admin.Status = AdminStatus.Deleted;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateAdmin(Admin admin)
+        {
+            using (var context = new AASDBContext())
+            {
+                var existing = GetAdmin(admin.Username);
+
+                if (existing == null)
+                    throw new NotFoundException();
+
+                existing.AdminName = admin.AdminName;
+
+                context.SaveChanges();
+            }
+        }
     }
 }

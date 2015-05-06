@@ -5,5 +5,6 @@
 	[ProfessorName] NVARCHAR(256) NOT NULL,
 	[StartDate] Date NOT NULL,
 	[EndDate] Date NOT NULL, 
-    [ExcusedTime] TIME NULL,
+    [ExcusedTime] TIME NULL, 
+    [IsArchived] BIT NOT NULL DEFAULT 0,
 )

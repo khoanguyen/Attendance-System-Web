@@ -50,5 +50,17 @@ namespace AttendanceSystem.Controllers
             Logic.DeleteClass(id);
             return Ok();
         }
+
+        [HttpGet, Route("classes/available")]
+        public IHttpActionResult GetAvailableClassForUser()
+        {
+            return JsonEx(Logic.GetAvailableClassForStudent(CurrentStudent.Email));
+        }
+
+        [HttpGet, Route("classes/registered")]
+        public IHttpActionResult GetRegisteredClassForUser()
+        {
+            return JsonEx(Logic.GetRegisteredClassForStudent(CurrentStudent.Email));
+        }
     }
 }
