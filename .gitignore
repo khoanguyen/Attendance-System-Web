@@ -5,3 +5,5 @@ obj
 *.suo
 *.csproj.user
 packages
+/AttendanceSystem/AASDB/*.dbmdl
+AASDB.dbmdl
