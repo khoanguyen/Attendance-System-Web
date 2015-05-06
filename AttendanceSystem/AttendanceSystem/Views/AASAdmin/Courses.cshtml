@@ -1,0 +1,36 @@
+﻿@model List<AttendanceSystem.Models.LogicModel.ClassLogicModel>
+
+@section BodySection{
+<div class="panel panel-primary">
+    <div class="panel-heading">Courses</div>
+    <div class="panel-body">
+        <button type="button" class="btn btn-primary">New Class</button>
+    </div>
+    <table class="table">
+        <thead class="bg-info">
+            <tr>
+                <th>Name</th>
+                <th>Professor</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Excused time</th>
+                <th>Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a href="/aasadmin/course/@item.Id">@item.Name</a></td>
+                    <td>@item.ProfessorName</td>
+                    <td>@item.StartDate.ToShortDateString()</td>
+                    <td>@item.EndDate.ToShortDateString()</td>
+                    <td>@item.ExcusedTime</td>
+                    <td><a href="/aasadmin/course/@item.Id"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+}

@@ -22,7 +22,7 @@ namespace AttendanceSystem.Infrastructure.Errors
             }
         }        
 
-        public InvalidTokenException() : base("Invalid Secuirty Token") { }
+        public InvalidTokenException() : base("Invalid Security Token") { }
 
     }
 }

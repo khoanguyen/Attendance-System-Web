@@ -6,24 +6,16 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Controllers
 {
-    public class HomeController : Controller
+    public class AASErrorController : Controller
     {
+        // GET: AASAuthorization
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ViewResult Authorization()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

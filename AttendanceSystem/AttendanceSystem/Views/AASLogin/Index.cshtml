@@ -1,0 +1,42 @@
+﻿@model AttendanceSystem.Models.ErrorMessageModel
+
+@section BodySection{
+<div class="row">
+    <div class="col-md-6">
+        <h1>Log In</h1>
+        <h4><small>Please enter your username and password.</small></h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Login", "AASLogin"))
+        {
+            <div class="form-group">
+                <label for="userName">Username [email for student login]</label>
+                <input name="userName" id="userName" type="text" class="form-control" placeholder="Username or email">
+            </div>
+            <div class="form-group">
+                <label for="userPwd">Password</label>
+                <input name="userPwd" id="userPwd" type="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> Keep me logged in &ndash; Doesn't have an account? <a href="#">Register</a> here!
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" name="btnAdmin">Login as admin</button>
+            <button type="submit" class="btn btn-primary" name="btnStudent">Login as student</button>
+        }
+       
+    </div>
+    <div class="col-lg-6">
+        @if (Model != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@Model.Error</strong> @Model.ErrorMessage
+            </div>
+        }
+    </div>
+</div>
+}
