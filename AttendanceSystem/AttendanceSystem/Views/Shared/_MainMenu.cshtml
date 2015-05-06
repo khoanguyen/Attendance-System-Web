@@ -1,0 +1,36 @@
+﻿@{
+    var menu = AttendanceSystem.Infrastructure.Utils.SessionHelper
+                               .GetSession<AttendanceSystem.Models.UserSession>(AttendanceSystem.Models.UserSession.LoggedinUserSession).MainMenu;
+}
+
+<ul class="nav navbar-nav">
+    @foreach (var item in menu)
+    {
+        var active = item.IsActive ? "active" : "";
+        if (item.ChildLinks != null)
+        {
+            <li class="dropdown @active">
+                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void();">@item.Link.LinkText <span class="caret"></span></a>
+                <ul role="menu" class="dropdown-menu">
+                    @foreach (var c in item.ChildLinks)
+                    {
+                        <li><a href="@c.Link">@c.LinkText</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li class="@active"><a href="@item.Link.Link">@item.Link.LinkText</a></li>
+        }
+    }
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Your account<span class="caret"></span></a>
+        <ul role="menu" class="dropdown-menu">
+            <li>@Html.ActionLink("Change password","changepassword","aaslogin")</li>
+            <li>@Html.ActionLink("Log out", "logout", "aaslogin")</li>
+        </ul>
+    </li>
+</ul>

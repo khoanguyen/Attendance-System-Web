@@ -72,6 +72,7 @@
     <None Include="SampleData\AdminData.sql" />
     <None Include="SampleData\Class.sql" />
     <None Include="AASDB.Remote.publish.xml" />
+    <None Include="AASDB.Sunny.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Env">

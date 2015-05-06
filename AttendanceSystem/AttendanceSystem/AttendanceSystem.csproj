@@ -133,11 +133,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AASAdminAccountPartial.cs" />
     <Compile Include="Controllers\AASApiController.cs" />
+    <Compile Include="Controllers\AASErrorController.cs" />
+    <Compile Include="Controllers\AASLoginController.cs" />
+    <Compile Include="Controllers\AASStudentController.cs" />
     <Compile Include="Controllers\LogicApiController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AASAdminController.cs" />
     <Compile Include="Controllers\PublicTestApiController.cs" />
     <Compile Include="Controllers\SecurityApiController.cs" />
+    <Compile Include="Controllers\AASAdminStudentPartial.cs" />
     <Compile Include="Controllers\TestApiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,11 +158,14 @@
     <Compile Include="Infrastructure\Errors\TokenExpiredException.cs" />
     <Compile Include="Infrastructure\Filters\TokenExchangeFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\TokenRequiredFilterAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\UserSessionFilterAttribute.cs" />
     <Compile Include="Infrastructure\Implementation\AASLogic.cs" />
     <Compile Include="Infrastructure\Interfaces\IAASLogic.cs" />
     <Compile Include="Infrastructure\Security\Token.cs" />
+    <Compile Include="Infrastructure\Utils\ApiUriHelper.cs" />
     <Compile Include="Infrastructure\Utils\Config.cs" />
     <Compile Include="Infrastructure\Utils\PasswordHashProvider.cs" />
+    <Compile Include="Infrastructure\Utils\SessionHelper.cs" />
     <Compile Include="Models\AASContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -182,24 +190,27 @@
     <Compile Include="Models\ClassSession.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ErrorMessageModel.cs" />
     <Compile Include="Models\LogicModel\ClassLogicModel.cs" />
     <Compile Include="Models\LogicModel\ClassSessionLogicModel.cs" />
     <Compile Include="Models\LogicModel\LoginLogicModel.cs" />
     <Compile Include="Models\LoginRequestType.cs" />
+    <Compile Include="Models\MenuLinkModel.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\favicon-32x32.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\AASContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AASContext.Designer.cs</LastGenOutput>
@@ -226,6 +237,9 @@
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\ToAAS.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\course-scripts.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -234,6 +248,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -248,10 +263,19 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\AASAdmin\About.cshtml" />
+    <Content Include="Views\AASAdmin\Students.cshtml" />
+    <Content Include="Views\AASAdmin\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Shared\_MainMenu.cshtml" />
+    <Content Include="Views\AASLogin\Index.cshtml" />
+    <Content Include="Views\AASAdmin\Courses.cshtml" />
+    <Content Include="Views\AASAdmin\Course.cshtml" />
+    <Content Include="Views\AASLogin\ChangePassword.cshtml" />
+    <Content Include="Views\AASStudent\Index.cshtml" />
+    <Content Include="Views\AASError\Index.cshtml" />
+    <Content Include="Views\AASAdmin\Admins.cshtml" />
+    <Content Include="Views\AASError\Authorization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
