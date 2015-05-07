@@ -20,8 +20,7 @@ namespace AttendanceSystem
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
-                                "~/Scripts/jquery-1.10.2.js",      
-                                "~/Scripts/bootstrap.js"));
+                                "~/Scripts/jquery-1.10.2.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css",
