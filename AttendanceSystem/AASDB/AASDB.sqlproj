@@ -67,6 +67,7 @@
     <Build Include="Tables\Class.sql" />
     <Build Include="Tables\ClassSession.sql" />
     <Build Include="Tables\Ticket.sql" />
+    <Build Include="Tables\AttendanceRecord.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AASDB.Dev.publish.xml" />
