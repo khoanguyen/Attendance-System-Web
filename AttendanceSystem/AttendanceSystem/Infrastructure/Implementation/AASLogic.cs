@@ -194,6 +194,10 @@ namespace AttendanceSystem.Infrastructure.Implementation
                     context.Classes.Remove(classObj);
                     context.SaveChanges();
                 }
+                else
+                {
+                    throw new NotFoundException();
+                }
             }
         }
 

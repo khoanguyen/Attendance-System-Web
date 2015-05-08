@@ -10,7 +10,7 @@
         if (item.ChildLinks != null)
         {
             <li class="dropdown @active">
-                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void();">@item.Link.LinkText <span class="caret"></span></a>
+                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">@item.Link.LinkText <span class="caret"></span></a>
                 <ul role="menu" class="dropdown-menu">
                     @foreach (var c in item.ChildLinks)
                     {
@@ -27,7 +27,7 @@
 </ul>
 <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
-        <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Your account<span class="caret"></span></a>
+        <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Your account<span class="caret"></span></a>
         <ul role="menu" class="dropdown-menu">
             <li>@Html.ActionLink("Change password","changepassword","aaslogin")</li>
             <li>@Html.ActionLink("Log out", "logout", "aaslogin")</li>

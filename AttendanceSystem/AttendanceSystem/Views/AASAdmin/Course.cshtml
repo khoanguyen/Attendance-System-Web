@@ -3,13 +3,28 @@
 @section BodySection{
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <strong>@Model.Name</strong> by @Model.ProfessorName :: @Model.StartDate.ToShortDateString() to @Model.EndDate.ToShortDateString() ::
+        @if (Model.Id == 0)
+        {
+            <strong>New Course</strong>
+        }
+        else
+        {
+            <strong>@Model.Name</strong><span> by @Model.ProfessorName :: @Model.StartDate.ToShortDateString() to @Model.EndDate.ToShortDateString() ::</span>
+        }
+        
     </div>
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <button type="button" class="btn btn-info">View attendance history</button>
-                <button type="button" class="btn btn-default" onclick="javascript:deleteClass(@Model.Id)">Delete class</button>
+                @if (Model.Id == 0)
+                {
+                    <a href="~/aasadmin/courses" class="btn btn-default">Cancel</a>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-info">View attendance history</button>
+                    <button type="button" class="btn btn-default" data-bind="click: deleteClass">Delete class</button>
+                }
             </div>
         </div>
         <h3>Class information</h3>
@@ -17,7 +32,7 @@
             <div class="col-md-6">
                 <form>
                     <div class="form-group">
-                        <label>Class name :</label>
+                        <label>Class name</label>
                         <input class="form-control" data-bind="value: Name" placeholder="Course name" />
                         
                     </div>
@@ -53,9 +68,17 @@
                         <label for="exampleInputFile">Excused time</label>
                         <input type="text" class="form-control" placeholder="Start time" data-bind="value: ExcusedTime" />                        
                     </div>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: saveClass">Submit</button>
                     <a href="~/aasadmin/courses" class="btn btn-default">Cancel</a>
                 </form>
+            </div>
+            <div class="col-md-6" id="result-message">
+                <div class="alert alert-danger" role="alertdialog" data-bind="visible: isError">
+                    <strong>Error on save: </strong><span data-bind="text: resultMessage"></span>
+                </div>
+                <div class="alert alert-success" role="alertdialog" data-bind="visible: isSuccess">
+                    <strong>Message: </strong><span data-bind="text: resultMessage"></span>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -81,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: Sessions">
-                            <tr data-bind="attr: {id : Id}">
+                            <tr data-bind="attr: {id : Id}, css: {'has-error': hasError}">
                                 <td>
                                     <span data-bind="text: StartTime, visible: !inEditMode()"></span>
                                     <input class="form-control" placeholder="Start time" data-bind="value: StartTime, visible: inEditMode" />

@@ -53,5 +53,9 @@
     </nav>    
     @Scripts.Render("~/bundles/scripts")
     @RenderSection("scripts", required:false) 
+    <script type="text/javascript">
+        // Initialize baseUrl
+        window.aasweb = window.location.protocol + "//" + window.location.host + "@Request.ApplicationPath";
+    </script>
 </body>
 </html>

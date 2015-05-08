@@ -21,6 +21,15 @@ namespace AttendanceSystem.Controllers
         // GET: AASLogin
         public ActionResult Index()
         {
+            if (SessionHelper.IsSessionNull(UserSession.LoggedinUserSession))
+            {
+                //to be implemented
+            }
+            return View();
+        }
+
+        public ViewResult SelectZone()
+        {
             return View();
         }
 

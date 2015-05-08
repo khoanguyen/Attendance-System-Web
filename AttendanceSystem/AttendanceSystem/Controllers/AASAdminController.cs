@@ -38,11 +38,21 @@ namespace AttendanceSystem.Controllers
         }
 
         
-        public async Task<ActionResult> Course(int id)
+        public async Task<ActionResult> Course(int? id)
         {
+            if (!id.HasValue)
+            {
+                var newCourse = new ClassLogicModel()
+                {
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    Sessions = new List<ClassSessionLogicModel>(),
+                };
+                return View(newCourse);
+            }
             using (var client = SetupClientAndSetMenu(1))
             {
-                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, id.ToString());                
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, id.Value.ToString());                
                 var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -53,6 +63,37 @@ namespace AttendanceSystem.Controllers
                     return View(course);
                 }
                 return Redirect("/aaserror");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Course(ClassLogicModel course, string startDate, string endDate)
+        {
+            try
+            {
+                course.StartDate = DateTime.Parse(startDate);
+                course.EndDate = DateTime.Parse(endDate);
+                using (var client = SetupClientAndSetMenu(1))
+                {
+
+                    var url = ApiUriHelper.GetBaseUri() + (course.Id == 0 ? ApiUriHelper.allClassesUrl :
+                              ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, course.Id.ToString()));
+
+                    var response = (course.Id == 0) ? await client.PostAsJsonAsync<ClassLogicModel>(url, course) :
+                                                          await client.PutAsJsonAsync<ClassLogicModel>(url, course);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return Json(new { message = "Save successful" });
+                    }
+                    else
+                    {
+                        throw new HttpException(500, "Can't not save class.");
+                    }                  
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException(500, ex.Message);
             }
         }
 
@@ -71,12 +112,13 @@ namespace AttendanceSystem.Controllers
                     }
                     else
                     {
-                        throw new HttpException(500, "Delete fail");
+                        var message = await response.Content.ReadAsStringAsync();
+                        throw new HttpException(500, "Unable to delete course." + message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new HttpException(500, ex.Message);
+                    throw new HttpException(500, "Unable to delete course." + ex.Message);
                 }
                 
             }
