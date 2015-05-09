@@ -13,7 +13,8 @@ namespace AttendanceSystem.Infrastructure.Utils
         
         public static string GetBaseUri()
         {
-            return ConfigurationManager.AppSettings["webapp:BaseAPIUrl"];
+            var baseUrl = ConfigurationManager.AppSettings["BaseAPIUrl"];
+            return baseUrl;
         }
 
         public static string ComposeUrl(string urlPattern, params string[] args)

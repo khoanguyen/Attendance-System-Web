@@ -19,7 +19,7 @@
             $(element).datetimepicker(options);
             $(element).datetimepicker().show();
             $(element).on("dp.change", function (e) {
-                var jsDate = new Date(e.date.format(appConfig.dateTimeFormat.dateTimeUTCFull));
+                var jsDate = new Date(e.date.format("MMMM DD, YYYY H:m:s"));
                 value(jsDate);
                 if (onChangeDateHandler) {
                     onChangeDateHandler(jsDate);
@@ -32,7 +32,7 @@
 
 function SessionModel(data) {
     var self = this;
-    self.Id = ko.observable(data.Id) || ko.observable();
+    self.Id = data.Id || 0;
     self.StartTime = ko.observable(data.StartTime) || ko.observable();
     self.EndTime = ko.observable(data.EndTime) || ko.observable();
     self.Room = ko.observable(data.Room) || ko.observable();
@@ -57,7 +57,18 @@ function CourseViewModel(data) {
     self.isNewSession = ko.observable(false);
     self.isError = ko.observable(false);
     self.isSuccess = ko.observable(false);
+    self.isProcessing = ko.observable(false);
+    self.disableSubmitbtn = ko.observable(false);
     self.resultMessage = ko.observable();
+    self.weekdayOptions = [
+                            {wDay: "Mon", value : 1},
+                            {wDay: "Tue", value : 2},
+                            {wDay: "Wed", value : 3},
+                            {wDay: "Thu", value : 4},
+                            {wDay: "Fri", value : 5},
+                            {wDay: "Sat", value : 6},
+                            {wDay: "Sun", value: 0 }
+                         ];
     self.formatDate = function (date) {
         if (date instanceof Date) {
             return moment(date).format('DD-MMM-YYYY');
@@ -65,15 +76,22 @@ function CourseViewModel(data) {
             return date === undefined ? "" : moment(date).format('DD-MMM-YYYY');
         }
     };
+    self.formatWeekday = function (day) {
+        return parseWeekday(day);
+    };
     self.deleteClass = function(sender, e) {
         /*Call performDeleteClass() then show the result.*/
+        showProcessing();
         performDeleteClass();
-        jumpToMessage();
     };
     self.saveClass = function () {
-        /*Refine data then call performSaveClass() then show the result.*/
-        performSaveClass();        
-        jumpToMessage()
+        /*Validate data then call performSaveClass() then show the result.*/
+        showProcessing();
+        if (!self.Name() || !self.ProfessorName() || !self.EndDate() || !self.StartDate()) {
+            hideProcessing(false, "Please enter all required data: [Course name], [Professor name], [Start date], [End date]");
+        } else {
+            performSaveClass();
+        }            
     };
     self.addNewSession = function () {
         if (self.editModeEnabled()) {
@@ -133,7 +151,7 @@ function CourseViewModel(data) {
         for (i = 0; i < data.Sessions.length; i++) {
             data.Sessions[i].StartTime = parseTime(data.Sessions[i].StartTime);            
             data.Sessions[i].EndTime = parseTime(data.Sessions[i].EndTime);
-            data.Sessions[i].Weekday = parseWeekday(data.Sessions[i].Weekday);
+            data.Sessions[i].Weekday = data.Sessions[i].Weekday;
             self.Sessions.push(new SessionModel(data.Sessions[i]));
         }
     }
@@ -181,6 +199,25 @@ function CourseViewModel(data) {
         }
     }
 
+    function weekdayToInt(day) {
+        switch (day) {
+            case 1:
+                return "Mon";
+            case 2:
+                return "Tue";
+            case 3:
+                return "Wed";
+            case 4:
+                return "Thu";
+            case 5:
+                return "Fri";
+            case 6:
+                return "Sat";
+            default:
+                return "Sun";
+        }
+    }
+
     /*to be continued */
 
     function performDeleteClass() {
@@ -191,31 +228,38 @@ function CourseViewModel(data) {
             method: 'DELETE',
             data: {Id: self.Id}
         }).done(function () {
-            self.isSuccess(true);
-            self.resultMessage("The " + self.Name() + " course by " + self.ProfessorName() + " has been deleted.");
+            hideProcessing(true, "The " + self.Name() + " course by " + self.ProfessorName() + " has been deleted.")
+            self.disableSubmitbtn(true);
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            self.isError(true);
-            self.resultMessage("Status: " + jqXHR.status + ". Error: " + errorThrown);
+            hideProcessing(false, "Status: " + jqXHR.status + ". Error: " + errorThrown);
         });
     }
 
     function performSaveClass() {
         /*Send request to server to save this class and show the result.*/
         var uri = composeUrl("/aasadmin/course");
+        var start = moment(self.StartDate()).format('DD-MMM-YYYY');
+        var end = moment(self.EndDate()).format('DD-MMM-YYYY');
+        var saveSuccess = false;
+        var msg = "";
         $.ajax({
             url: uri,
             method: 'POST',
             data: {
                 course: refineData(),
-                startDate: moment(self.StartDate()).format('DD-MMM-YYYY'),
-                endDate: moment(self.EndDate()).format('DD-MMM-YYYY')
+                startDate: start,
+                endDate: end
             }
         }).done(function () {
-            self.isSuccess(true);
-            self.resultMessage("The " + self.Name() + " course by " + self.ProfessorName() + " has been saved.");
+            saveSuccess = true;
+            self.disableSubmitbtn(self.Id === 0);
+            msg = (self.Id === 0)? "The " + self.Name() + " course by " + self.ProfessorName() + " has been saved. Please go back to Courses menu":
+                                   "The " + self.Name() + " course by " + self.ProfessorName() + " has been saved.";
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            self.isError(true);
-            self.resultMessage("Status: " + jqXHR.status + ". Error: " + errorThrown);
+            msg = "Status: " + jqXHR.status + ". Error: " + errorThrown;
+            saveSuccess = false;
+        }).always(function () {
+            hideProcessing(saveSuccess, msg);
         });
     }
 
@@ -224,7 +268,7 @@ function CourseViewModel(data) {
         var sessionlist = [];
         for(i = 0; i < self.Sessions().length; i++){
             sessionlist.push({
-                Id : self.Sessions()[i].Id(),
+                Id : self.Sessions()[i].Id,
                 StartTime: self.Sessions()[i].StartTime(),
                 EndTime : self.Sessions()[i].EndTime(),
                 Room : self.Sessions()[i].Room(),
@@ -247,6 +291,22 @@ function CourseViewModel(data) {
     function jumpToMessage() {
         var msg = document.getElementById('result-message').offsetTop;
         window.scrollTo(0, top);
+    }
+
+    function showProcessing() {
+        self.isProcessing(true);
+        self.isError(false);
+        self.isSuccess(false);
+        self.resultMessage("");
+        jumpToMessage();
+    }
+
+    function hideProcessing(isSuccess, message) {
+        self.isProcessing(false);
+        self.isError(!isSuccess);
+        self.isSuccess(isSuccess);
+        self.resultMessage(message||"");
+        jumpToMessage();
     }
 
     function composeUrl(relativeUrl) {

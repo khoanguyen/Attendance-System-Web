@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 @if (Model.Id == 0)
                 {
-                    <a href="~/aasadmin/courses" class="btn btn-default">Cancel</a>
+                    <a href="~/aasadmin/courses" class="btn btn-default">Back to [Courses]</a>
                 }
                 else
                 {
@@ -32,13 +32,12 @@
             <div class="col-md-6">
                 <form>
                     <div class="form-group">
-                        <label>Class name</label>
-                        <input class="form-control" data-bind="value: Name" placeholder="Course name" />
-                        
+                        <label>Course name</label>
+                        <input class="form-control" data-bind="value: Name" placeholder="Course name" />                        
                     </div>
                     <div class="form-group">
                         <label>Professor name</label>
-                        @Html.TextBoxFor(i => i.ProfessorName, new { @class = "form-control", @placeholder = "Professor name" })
+                        <input class="form-control" data-bind="value: ProfessorName" placeholder="Professor name" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputFile">Start date</label>
@@ -66,13 +65,16 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputFile">Excused time</label>
-                        <input type="text" class="form-control" placeholder="Start time" data-bind="value: ExcusedTime" />                        
+                        <input type="text" class="form-control" placeholder="Excecused time format [hh:mm]" data-bind="value: ExcusedTime" />                        
                     </div>
-                    <button type="button" class="btn btn-primary" data-bind="click: saveClass">Submit</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: saveClass, visible: !disableSubmitbtn()">Submit</button>
                     <a href="~/aasadmin/courses" class="btn btn-default">Cancel</a>
                 </form>
             </div>
             <div class="col-md-6" id="result-message">
+                <div class="alert alert-info" role="alertdialog" data-bind="visible: isProcessing">
+                    <strong>Please wait: </strong><img src="data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" />
+                </div>
                 <div class="alert alert-danger" role="alertdialog" data-bind="visible: isError">
                     <strong>Error on save: </strong><span data-bind="text: resultMessage"></span>
                 </div>
@@ -107,15 +109,15 @@
                             <tr data-bind="attr: {id : Id}, css: {'has-error': hasError}">
                                 <td>
                                     <span data-bind="text: StartTime, visible: !inEditMode()"></span>
-                                    <input class="form-control" placeholder="Start time" data-bind="value: StartTime, visible: inEditMode" />
+                                    <input class="form-control" placeholder="Start time [hh:mm]" data-bind="value: StartTime, visible: inEditMode" />
                                 </td>
                                 <td>
                                     <span data-bind="text: EndTime, visible: !inEditMode()"></span>
-                                    <input class="form-control" placeholder="Start time" data-bind="value: EndTime, visible: inEditMode" />
+                                    <input class="form-control" placeholder="End time [hh:mm]" data-bind="value: EndTime, visible: inEditMode" />
                                 </td>
                                 <td>
-                                    <span data-bind="text: Weekday, visible: !inEditMode()"></span>
-                                    <select class="form-control" data-bind="options: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], value: Weekday, visible: inEditMode" />
+                                    <span data-bind="text: $parent.formatWeekday(Weekday()), visible: !inEditMode()"></span>
+                                    <select class="form-control" data-bind="options: $parent.weekdayOptions, optionsText: 'wDay', optionsValue: 'value', value: Weekday, visible: inEditMode" />
                                 </td>
                                 <td>
                                     <span data-bind="text: Room, visible: !inEditMode()"></span>

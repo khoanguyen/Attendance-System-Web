@@ -177,7 +177,17 @@ namespace AttendanceSystem.Infrastructure.Implementation
 
                 foreach (var newSession in newSessionList)
                 {
-                    existing.ClassSessions.Add(newSession);                    
+                    //This code cause "Multiplicity constraint violated" exception
+                    //existing.ClassSessions.Add(newSession);
+                    existing.ClassSessions.Add(new ClassSession
+                    {
+                        Class = existing,
+                        ClassId = existing.Id,
+                        EndTime = newSession.EndTime,
+                        StartTime = newSession.StartTime,
+                        Room = newSession.Room,
+                        Weekday = newSession.Weekday
+                    });                    
                 }
 
                 context.SaveChanges();                

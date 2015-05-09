@@ -56,7 +56,7 @@ namespace AttendanceSystem.Models.LogicModel
             {
                 var sessionObj = sessionModel.ToEntity();
                 result.ClassSessions.Add(sessionObj);
-                sessionObj.Class = result;
+                //sessionObj.Class = result;
                 sessionObj.ClassId = result.Id;
             }
 
