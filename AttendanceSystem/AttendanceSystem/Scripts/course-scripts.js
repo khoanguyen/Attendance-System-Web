@@ -50,7 +50,7 @@ function CourseViewModel(data) {
     self.ProfessorName = data.ProfessorName ? ko.observable(data.ProfessorName) : ko.observable();
     self.StartDate = data.StartDate ? ko.observable(parseDate(data.StartDate)) : ko.observable();
     self.EndDate = data.EndDate ? ko.observable(parseDate(data.EndDate)) : ko.observable();
-    self.ExcusedTime = self.ExcusedTime ? ko.observable(parseTime(data.ExcusedTime)) : ko.observable();
+    self.ExcusedTime = data.ExcusedTime ? ko.observable(parseTime(data.ExcusedTime)) : ko.observable();
     self.TypeName = "Class";
     self.Sessions = ko.observableArray([]);
     self.editModeEnabled = ko.observable(false);
