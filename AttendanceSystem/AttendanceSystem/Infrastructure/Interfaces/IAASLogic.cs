@@ -27,5 +27,9 @@ namespace AttendanceSystem.Infrastructure.Interfaces
         void UpdateAdmin(Admin admin);
 
         Student GetStudent(string email);
+        Ticket RegisterClass(int studentId, int classId);
+        void DropClass(int studentId, int classId);
+        byte[] GetTicketQrCode(int studentId, int classId);
+        bool CheckQrCode(int studentId, int classId, string qrCode);
     }
 }

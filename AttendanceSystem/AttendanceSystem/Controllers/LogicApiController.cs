@@ -1,8 +1,10 @@
 ﻿using AttendanceSystem.Infrastructure.Filters;
+using AttendanceSystem.Infrastructure.Utils;
 using AttendanceSystem.Models.LogicModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
 
@@ -61,6 +63,39 @@ namespace AttendanceSystem.Controllers
         public IHttpActionResult GetRegisteredClassForUser()
         {
             return JsonEx(Logic.GetRegisteredClassForStudent(CurrentStudent.Email));
+        }
+
+        [HttpPost, Route("classes/register/{classId}")]
+        public IHttpActionResult RegisterClass([FromUri]int classId)
+        {
+            var ticket = Logic.RegisterClass(CurrentStudent.Id, classId);
+            return JsonEx(ticket);
+        }
+
+        [HttpPost, Route("classes/drop/{classId}")]
+        public IHttpActionResult DropClass([FromUri]int classId)
+        {
+            var ticket = Logic.RegisterClass(CurrentStudent.Id, classId);
+            return JsonEx(ticket);
+        }
+
+        [HttpGet, Route("qrCode/{classId}")]
+        public IHttpActionResult GetQrCode([FromUri]int classId)
+        {
+            var image = Logic.GetTicketQrCode(CurrentStudent.Id, classId);
+            return JsonEx(new
+            {
+                image = Convert.ToBase64String(image)
+            });
+        }
+
+        [HttpPost, Route("qrCode/{classId}")]
+        public IHttpActionResult CheckQrCode([FromUri]int classId, [FromUri]int studentId, [FromBody] QrCodeModel model)
+        {            
+            return JsonEx(new
+            {
+                result = Logic.CheckQrCode(CurrentStudent.Id, classId, model.QrCode)
+            });
         }
     }
 }

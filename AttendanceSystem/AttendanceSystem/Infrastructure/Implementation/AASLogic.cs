@@ -341,5 +341,68 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 context.SaveChanges();
             }
         }
-    }
+
+        public Ticket RegisterClass(int studentId, int classId)
+        {
+            using (var context = new AASDBContext())
+            {
+                var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
+                if (ticket != null) return ticket;
+
+                ticket = new Ticket
+                {
+                    StudentId = studentId,
+                    ClassId = classId
+                };
+
+                ticket.GenerateQrCode();
+
+                context.Tickets.Add(ticket);
+                context.SaveChanges();
+
+                return ticket;
+            }
+        }
+
+        public void DropClass(int studentId, int classId)
+        {
+            using (var context = new AASDBContext())
+            {
+                var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
+                if (ticket != null)
+                { 
+                    context.Tickets.Remove(ticket);
+                    context.SaveChanges();
+                }               
+            }
+        }
+
+        public byte[] GetTicketQrCode(int studentId, int classId)
+        {
+            using (var context = new AASDBContext())
+            {
+                var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
+                if (ticket != null)
+                {
+                    return ticket.QrCode;
+                }
+
+                return new byte[0];
+            }
+        }
+
+        public bool CheckQrCode(int studentId, int classId, string qrCode)
+        {
+            using (var context = new AASDBContext())
+            {
+                var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
+                if (ticket != null)
+                {
+                    return ticket.Verify(qrCode);
+                }
+
+                return false;
+            }
+        }
+    } 
 }

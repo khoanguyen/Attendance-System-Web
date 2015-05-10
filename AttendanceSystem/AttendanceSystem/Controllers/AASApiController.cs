@@ -43,9 +43,13 @@ namespace AttendanceSystem.Controllers
         private Student GetCurrentStudent()
         {
             var token = Token.ReadFromHeader(this.Request);
-            return token != null && token.UserType == UserType.StudentUserType ?
+            var result = token != null && token.UserType == UserType.StudentUserType ?
                 Logic.GetStudent(token.Username) :
                 null;
+
+            if (result == null)
+                throw new InvalidTokenException();
+            return result;
         }
     }
 }
