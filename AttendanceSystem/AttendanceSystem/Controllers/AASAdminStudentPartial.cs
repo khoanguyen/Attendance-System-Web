@@ -24,7 +24,7 @@ namespace AttendanceSystem.Controllers
                 try
                 {
                     var response = await client.GetAsync(url);
-                    if (1 == 2)
+                    if (1==2)
                     {
                         var data = await response.Content.ReadAsStringAsync();
                         var serializer = new JavaScriptSerializer();
@@ -33,28 +33,12 @@ namespace AttendanceSystem.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Error", new
-                        {
-                            error = new ErrorMessageModel
-                                {
-                                    Error = "Request fail",
-                                    ErrorMessage = "Cannot get student list. Internal Server Error.",
-                                    ReturnLink = new LinkModel("back to students", "/aasadmin/students")
-                                }
-                        });
+                        return RedirectToAction("Index", "Error");
                     }
                 }
                 catch (Exception ex)
                 {
-                    return RedirectToAction("Index", "Error", new
-                    {
-                        error = new ErrorMessageModel
-                            {
-                                Error = "Request fail",
-                                ErrorMessage = "Cannot get student list. " + ex.Message,
-                                ReturnLink = new LinkModel("back to students", "/aasadmin/students")
-                            }
-                    });
+                    return RedirectToAction("Index", "Error");
                 }                        
             }            
         }

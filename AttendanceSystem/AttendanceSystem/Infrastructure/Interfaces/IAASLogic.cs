@@ -29,5 +29,9 @@ namespace AttendanceSystem.Infrastructure.Interfaces
         Student GetStudent(string email);
         IEnumerable<Student> GetStudents();
         int AddStudent(Student student);
+        Ticket RegisterClass(int studentId, int classId);
+        void DropClass(int studentId, int classId);
+        byte[] GetTicketQrCode(int studentId, int classId);
+        bool CheckQrCode(int studentId, int classId, string qrCode);
     }
 }

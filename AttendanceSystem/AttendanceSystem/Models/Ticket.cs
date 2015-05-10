@@ -14,6 +14,11 @@ namespace AttendanceSystem.Models
     
     public partial class Ticket
     {
+        public Ticket()
+        {
+            this.AttendanceRecords = new HashSet<AttendanceRecord>();
+        }
+    
         public int Id { get; set; }
         public int StudentId { get; set; }
         public int ClassId { get; set; }
@@ -21,5 +26,6 @@ namespace AttendanceSystem.Models
     
         public virtual Class Class { get; set; }
         public virtual Student Student { get; set; }
+        public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
     }
 }

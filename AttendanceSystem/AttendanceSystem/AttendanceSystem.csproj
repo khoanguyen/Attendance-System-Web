@@ -47,6 +47,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -162,12 +165,14 @@
     <Compile Include="Infrastructure\Filters\UserSessionFilterAttribute.cs" />
     <Compile Include="Infrastructure\Implementation\AASLogic.cs" />
     <Compile Include="Infrastructure\Interfaces\IAASLogic.cs" />
+    <Compile Include="Infrastructure\Security\DSAHelper.cs" />
     <Compile Include="Infrastructure\Security\Token.cs" />
     <Compile Include="Infrastructure\Utils\ApiUriHelper.cs" />
     <Compile Include="Infrastructure\StudentStatus.cs" />
     <Compile Include="Infrastructure\UserType.cs" />
     <Compile Include="Infrastructure\Utils\Config.cs" />
     <Compile Include="Infrastructure\Utils\PasswordHashProvider.cs" />
+    <Compile Include="Infrastructure\Utils\PngFormatter.cs" />
     <Compile Include="Infrastructure\Utils\SessionHelper.cs" />
     <Compile Include="Models\AASContext.Context.cs">
       <AutoGen>True</AutoGen>
@@ -187,6 +192,9 @@
     <Compile Include="Models\Admin.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AttendanceRecord.cs">
+      <DependentUpon>AASContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Class.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
@@ -198,11 +206,13 @@
     <Compile Include="Models\LogicModel\ClassSessionLogicModel.cs" />
     <Compile Include="Models\LogicModel\LoginLogicModel.cs" />
     <Compile Include="Models\LogicModel\StudentLogicModel.cs" />
+    <Compile Include="Models\LogicModel\QrCodeModel.cs" />
     <Compile Include="Models\LoginRequestType.cs" />
     <Compile Include="Models\MenuLinkModel.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TicketPartial.cs" />
     <Compile Include="Models\UserSession.cs" />
     <Compile Include="Models\Ticket.cs">
       <DependentUpon>AASContext.tt</DependentUpon>
@@ -269,6 +279,7 @@
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>

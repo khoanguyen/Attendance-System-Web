@@ -16,6 +16,17 @@
           <Property Name="Salt" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
         </EntityType>
+        <EntityType Name="AttendanceRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="SessionId" Type="int" Nullable="false" />
+          <Property Name="TicketId" Type="int" Nullable="false" />
+          <Property Name="RecordDate" Type="date" Nullable="false" />
+          <Property Name="CheckinTime" Type="datetimeoffset" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="Id" />
@@ -59,6 +70,42 @@
           <Property Name="ClassId" Type="int" Nullable="false" />
           <Property Name="QrCode" Type="varbinary(max)" Nullable="false" />
         </EntityType>
+        <Association Name="FK_AttendanceRecord_ClassSession">
+          <End Role="ClassSession" Type="Self.ClassSession" Multiplicity="1" />
+          <End Role="AttendanceRecord" Type="Self.AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSession">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceRecord_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="AttendanceRecord" Type="Self.AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceRecord_Tiket">
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="1" />
+          <End Role="AttendanceRecord" Type="Self.AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="TicketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ClassSession_Class">
           <End Role="Class" Type="Self.Class" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -103,10 +150,23 @@
         </Association>
         <EntityContainer Name="AASDBModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttendanceRecord" EntityType="Self.AttendanceRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassSession" EntityType="Self.ClassSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AttendanceRecord_ClassSession" Association="Self.FK_AttendanceRecord_ClassSession">
+            <End Role="ClassSession" EntitySet="ClassSession" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceRecord_Student" Association="Self.FK_AttendanceRecord_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceRecord_Tiket" Association="Self.FK_AttendanceRecord_Tiket">
+            <End Role="Ticket" EntitySet="Ticket" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecord" />
+          </AssociationSet>
           <AssociationSet Name="FK_ClassSession_Class" Association="Self.FK_ClassSession_Class">
             <End Role="Class" EntitySet="Class" />
             <End Role="ClassSession" EntitySet="ClassSession" />
@@ -141,6 +201,19 @@
           <AssociationSet Name="FK_Ticket_Student" Association="AASDBModel.FK_Ticket_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <EntitySet Name="AttendanceRecords" EntityType="AASDBModel.AttendanceRecord" />
+          <AssociationSet Name="FK_AttendanceRecord_ClassSession" Association="AASDBModel.FK_AttendanceRecord_ClassSession">
+            <End Role="ClassSession" EntitySet="ClassSessions" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceRecord_Student" Association="AASDBModel.FK_AttendanceRecord_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceRecord_Tiket" Association="AASDBModel.FK_AttendanceRecord_Tiket">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Admin">
@@ -179,6 +252,7 @@
           <Property Name="Weekday" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Name="Room" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Class" Relationship="AASDBModel.FK_ClassSession_Class" FromRole="ClassSession" ToRole="Class" />
+          <NavigationProperty Name="AttendanceRecords" Relationship="AASDBModel.FK_AttendanceRecord_ClassSession" FromRole="ClassSession" ToRole="AttendanceRecord" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -191,6 +265,7 @@
           <Property Name="DisplayName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Tickets" Relationship="AASDBModel.FK_Ticket_Student" FromRole="Student" ToRole="Ticket" />
+          <NavigationProperty Name="AttendanceRecords" Relationship="AASDBModel.FK_AttendanceRecord_Student" FromRole="Student" ToRole="AttendanceRecord" />
         </EntityType>
         <Association Name="FK_ClassSession_Class">
           <End Type="AASDBModel.Class" Role="Class" Multiplicity="1">
@@ -216,6 +291,7 @@
           <Property Name="QrCode" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Class" Relationship="AASDBModel.FK_Ticket_Class" FromRole="Ticket" ToRole="Class" />
           <NavigationProperty Name="Student" Relationship="AASDBModel.FK_Ticket_Student" FromRole="Ticket" ToRole="Student" />
+          <NavigationProperty Name="AttendanceRecords" Relationship="AASDBModel.FK_AttendanceRecord_Tiket" FromRole="Ticket" ToRole="AttendanceRecord" />
         </EntityType>
         <Association Name="FK_Ticket_Class">
           <End Type="AASDBModel.Class" Role="Class" Multiplicity="1">
@@ -242,6 +318,56 @@
             </Principal>
             <Dependent Role="Ticket">
               <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AttendanceRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
+          <Property Name="TicketId" Type="Int32" Nullable="false" />
+          <Property Name="RecordDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckinTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <NavigationProperty Name="ClassSession" Relationship="AASDBModel.FK_AttendanceRecord_ClassSession" FromRole="AttendanceRecord" ToRole="ClassSession" />
+          <NavigationProperty Name="Student" Relationship="AASDBModel.FK_AttendanceRecord_Student" FromRole="AttendanceRecord" ToRole="Student" />
+          <NavigationProperty Name="Ticket" Relationship="AASDBModel.FK_AttendanceRecord_Tiket" FromRole="AttendanceRecord" ToRole="Ticket" />
+        </EntityType>
+        <Association Name="FK_AttendanceRecord_ClassSession">
+          <End Type="AASDBModel.ClassSession" Role="ClassSession" Multiplicity="1" />
+          <End Type="AASDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSession">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceRecord_Student">
+          <End Type="AASDBModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="AASDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceRecord_Tiket">
+          <End Type="AASDBModel.Ticket" Role="Ticket" Multiplicity="1" />
+          <End Type="AASDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceRecord">
+              <PropertyRef Name="TicketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -305,6 +431,18 @@
               <MappingFragment StoreEntitySet="Ticket">
                 <ScalarProperty Name="QrCode" ColumnName="QrCode" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttendanceRecords">
+            <EntityTypeMapping TypeName="AASDBModel.AttendanceRecord">
+              <MappingFragment StoreEntitySet="AttendanceRecord">
+                <ScalarProperty Name="CheckinTime" ColumnName="CheckinTime" />
+                <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

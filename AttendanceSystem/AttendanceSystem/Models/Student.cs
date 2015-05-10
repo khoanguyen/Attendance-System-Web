@@ -17,6 +17,7 @@ namespace AttendanceSystem.Models
         public Student()
         {
             this.Tickets = new HashSet<Ticket>();
+            this.AttendanceRecords = new HashSet<AttendanceRecord>();
         }
     
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace AttendanceSystem.Models
         public byte Status { get; set; }
     
         public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
     }
 }

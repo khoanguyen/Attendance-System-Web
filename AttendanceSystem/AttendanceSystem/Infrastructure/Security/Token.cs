@@ -138,7 +138,7 @@ namespace AttendanceSystem.Infrastructure.Security
 
         private static void SignToken(Token token)
         {
-            using (var dsa = GetPrivateDsa())
+            using (var dsa = DSAHelper.GetPrivateDsa())
             {
                 var rgbHash = token.ComposeData();
                 var sigBytes = dsa.CreateSignature(rgbHash);
@@ -147,32 +147,10 @@ namespace AttendanceSystem.Infrastructure.Security
             }
         }
 
-        private static DSA GetPrivateDsa()
-        {
-            return GetDsa("key.private");
-        }
-
-        private static DSA GetPublicDsa()
-        {
-            return GetDsa("key.public");
-        }
-
-        private static DSA GetDsa(string filename)
-        {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", filename);
-            var key = string.Empty;
-            using (var reader = File.OpenText(path))
-            {
-                key = reader.ReadToEnd();
-            }
-            var dsa = DSA.Create();
-            dsa.FromXmlString(key);
-            return dsa;
-        }
 
         public void Validate()
         {
-            using (var dsa = GetPublicDsa())
+            using (var dsa = DSAHelper.GetPublicDsa())
             {
                 var sigBytes = ConvertToBytes(this.Signature);
                 var data = this.ComposeData();
