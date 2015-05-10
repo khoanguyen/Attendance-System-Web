@@ -92,7 +92,7 @@ namespace AttendanceSystem.Controllers
         public IHttpActionResult RegisterClass([FromUri]int classId)
         {
             var ticket = Logic.RegisterClass(CurrentStudent.Id, classId);
-            return JsonEx(ticket);
+            return JsonEx(new TicketModel(ticket));
         }
 
         [HttpPost, Route("classes/drop/{classId}")]
