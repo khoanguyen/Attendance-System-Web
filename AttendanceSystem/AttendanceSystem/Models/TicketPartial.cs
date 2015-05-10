@@ -50,11 +50,20 @@ namespace AttendanceSystem.Models
             }
         }
 
+        public static int ExtractStudentId(string incoming)
+        {
+            var data = Convert.FromBase64String(incoming);
+            var json = Encoding.ASCII.GetString(data);
+            var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return dic.ContainsKey("id") ? 0 : int.Parse(dic["id"]);
+        }
+
         public byte[] ComposeSignedData()
         {
             var rgbHash = ComposeData();
             var signature = SignData(rgbHash);
             var dic = new Dictionary<string, string>();
+            dic["id"] = this.StudentId.ToString();
             dic["rgb"] = Convert.ToBase64String(rgbHash);
             dic["signature"] = Convert.ToBase64String(signature);
             var strData = JsonConvert.SerializeObject(dic);

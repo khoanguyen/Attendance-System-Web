@@ -12,20 +12,17 @@ namespace AttendanceSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Ticket
+    public partial class AttendanceRecord
     {
-        public Ticket()
-        {
-            this.AttendanceRecords = new HashSet<AttendanceRecord>();
-        }
-    
         public int Id { get; set; }
         public int StudentId { get; set; }
-        public int ClassId { get; set; }
-        public byte[] QrCode { get; set; }
+        public int SessionId { get; set; }
+        public int TicketId { get; set; }
+        public System.DateTime RecordDate { get; set; }
+        public System.DateTimeOffset CheckinTime { get; set; }
     
-        public virtual Class Class { get; set; }
+        public virtual ClassSession ClassSession { get; set; }
         public virtual Student Student { get; set; }
-        public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
 }

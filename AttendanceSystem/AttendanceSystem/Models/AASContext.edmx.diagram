@@ -13,6 +13,10 @@
         <EntityTypeShape EntityType="AASDBModel.Ticket" Width="1.5" PointX="6" PointY="3" />
         <AssociationConnector Association="AASDBModel.FK_Ticket_Class" />
         <AssociationConnector Association="AASDBModel.FK_Ticket_Student" />
+        <EntityTypeShape EntityType="AASDBModel.AttendanceRecord" Width="1.5" PointX="8.25" PointY="2.75" />
+        <AssociationConnector Association="AASDBModel.FK_AttendanceRecord_ClassSession" />
+        <AssociationConnector Association="AASDBModel.FK_AttendanceRecord_Student" />
+        <AssociationConnector Association="AASDBModel.FK_AttendanceRecord_Tiket" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

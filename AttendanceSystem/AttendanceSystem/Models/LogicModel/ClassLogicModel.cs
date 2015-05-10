@@ -18,7 +18,7 @@ namespace AttendanceSystem.Models.LogicModel
             StartDate = classObj.StartDate;
             EndDate = classObj.EndDate;
             ExcusedTime = classObj.ExcusedTime;
-
+            if (classObj.Tickets.Count > 0) this.HasTicket = true;
             if (populateSession)
             {
                 Sessions = new List<ClassSessionLogicModel>(
@@ -33,6 +33,8 @@ namespace AttendanceSystem.Models.LogicModel
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public TimeSpan? ExcusedTime { get; set; }
+        public TicketModel OwnedTicket { get; set; }
+        public bool HasTicket { get; set; }
 
         [JsonProperty(PropertyName = "__type")]
         public string TypeName { get { return "Class"; } }

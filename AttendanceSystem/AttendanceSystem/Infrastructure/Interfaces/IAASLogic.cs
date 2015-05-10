@@ -13,7 +13,9 @@ namespace AttendanceSystem.Infrastructure.Interfaces
         string SignIn(LoginLogicModel model);
 
         IEnumerable<Class> GetClasses();
+        IEnumerable<Class> GetClassesWithTicket(int studentId);
         Class GetClass(int id);
+        Class GetClassWithTicket(int id);
         int AddClass(Class classObj);
         void UpdateClass(Class classObj);
         void DeleteClass(int id);

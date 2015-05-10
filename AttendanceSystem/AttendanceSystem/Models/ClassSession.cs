@@ -14,6 +14,11 @@ namespace AttendanceSystem.Models
     
     public partial class ClassSession
     {
+        public ClassSession()
+        {
+            this.AttendanceRecords = new HashSet<AttendanceRecord>();
+        }
+    
         public int Id { get; set; }
         public int ClassId { get; set; }
         public System.TimeSpan StartTime { get; set; }
@@ -22,5 +27,6 @@ namespace AttendanceSystem.Models
         public string Room { get; set; }
     
         public virtual Class Class { get; set; }
+        public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
     }
 }
