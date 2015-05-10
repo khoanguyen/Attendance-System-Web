@@ -8,8 +8,10 @@ namespace AttendanceSystem.Infrastructure.Utils
 {
     public class ApiUriHelper
     {
-        public const string allClassesUrl = "business/classes";
-        public const string classByIdUrl = "business/classes/{0}";
+        public const string AllClassesUrl = "business/classes";
+        public const string ClassByIdUrl = "business/classes/{0}";
+        public const string StudentUrl = "business/students";
+        public const string StudentById = "business/student/{0}"; 
         
         public static string GetBaseUri()
         {

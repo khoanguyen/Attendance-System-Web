@@ -211,8 +211,7 @@ namespace AttendanceSystem.Infrastructure.Implementation
             }
         }
 
-
-        public Student GetStudent(string email)
+       public Student GetStudent(string email)
         {
             using (var context = new AASDBContext())
             {
@@ -341,6 +340,26 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 context.SaveChanges();
             }
         }
+
+        public IEnumerable<Student> GetStudents()
+        {
+            using (var context = new AASDBContext())
+            {
+                return context.Students.ToArray();
+            }
+        }
+
+        public int AddStudent(Student student)
+        {
+            using (var context = new AASDBContext())
+            {
+                student.Status = StudentStatus.Active;
+                context.Students.Add(student);
+                context.SaveChanges();
+                return student.Id;
+            }
+        }
+    
 
         public Ticket RegisterClass(int studentId, int classId)
         {

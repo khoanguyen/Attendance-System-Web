@@ -1,4 +1,5 @@
 ﻿using AttendanceSystem.Infrastructure.Filters;
+using AttendanceSystem.Models;
 using AttendanceSystem.Infrastructure.Utils;
 using AttendanceSystem.Models;
 using AttendanceSystem.Models.LogicModel;
@@ -71,6 +72,21 @@ namespace AttendanceSystem.Controllers
         {
             return JsonEx(Logic.GetRegisteredClassForStudent(CurrentStudent.Email));
         }
+
+        [HttpGet, Route("students")]
+        public IHttpActionResult GetStudents()
+        {
+            return JsonEx(Logic.GetStudents());
+        }
+
+        [HttpPost, Route("students")]
+        public IHttpActionResult AddStudent([FromBody] StudentLogicModel student)
+        {
+            var entity = student.ToEntity();
+            Logic.AddStudent(entity);
+            return JsonEx(entity.Id);
+        }
+
 
         [HttpPost, Route("classes/register/{classId}")]
         public IHttpActionResult RegisterClass([FromUri]int classId)
