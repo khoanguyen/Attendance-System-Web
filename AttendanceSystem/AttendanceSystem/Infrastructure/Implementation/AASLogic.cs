@@ -423,5 +423,49 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 return false;
             }
         }
+
+        public Class GetClassWithTicket(int id)
+        {
+            using (var context = new AASDBContext())
+            {
+                var classObj = context.Classes
+                                      .Include("Tickets")
+                                      .Include("ClassSessions")
+                                      .SingleOrDefault(c => c.Id == id);
+
+                if (classObj == null) throw new NotFoundException();
+                return classObj;
+            }
+        }
+
+        public IEnumerable<Class> GetClassesWithTicket(int studentId)
+        {
+            using (var context = new AASDBContext())
+            {
+                var classes = context.Classes
+                                     .Where(c => c.IsArchived == false)                                     
+                                     .ToArray()
+                                     .Select(c => new Class
+                                     {
+                                         EndDate = c.EndDate,
+                                         ExcusedTime = c.ExcusedTime,
+                                         Id = c.Id,
+                                         IsArchived = c.IsArchived,
+                                         Name = c.Name,
+                                         ProfessorName = c.ProfessorName,
+                                         StartDate = c.StartDate
+                                     }).ToArray();
+                var tickets = context.Tickets.Where(t => t.StudentId == studentId).ToArray();
+                foreach (var ticket in tickets)
+                {
+                    var classObj = classes.SingleOrDefault(c => c.Id == ticket.ClassId);
+                    if (classObj != null)
+                    {
+                        classObj.Tickets.Add(ticket);
+                    }
+                }
+                return classes;
+            }
+        }
     } 
 }

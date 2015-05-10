@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Infrastructure.Filters;
 using AttendanceSystem.Models;
 using AttendanceSystem.Infrastructure.Utils;
+using AttendanceSystem.Models;
 using AttendanceSystem.Models.LogicModel;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,22 @@ namespace AttendanceSystem.Controllers
         [HttpGet, Route("classes")]
         public IHttpActionResult GetClasses()
         {
-            return JsonEx(
-                Logic.GetClasses()
-                     .Select(c => new ClassLogicModel(c, false))
-                );
+            var classes = (CurrentStudent != null) ? Logic.GetClassesWithTicket(CurrentStudent.Id) : Logic.GetClasses();
+            return JsonEx(classes.Select(c => new ClassLogicModel(c, false)));
         }
 
         [HttpGet, Route("classes/{id:int}")]
         public IHttpActionResult GetClass([FromUri]int id)
-        {
-            return JsonEx(new ClassLogicModel(Logic.GetClass(id)));
+        {            
+            var classObj = (CurrentStudent != null)? Logic.GetClassWithTicket(id): Logic.GetClass(id);
+            var model = new ClassLogicModel(classObj);
+            if (CurrentStudent != null)
+            {
+                int currentStudentId = CurrentStudent.Id;
+                Ticket ticket = classObj.Tickets.FirstOrDefault(t => t.ClassId == id && t.StudentId == currentStudentId);
+                model.OwnedTicket = ticket == null ? null : new TicketModel(ticket);
+            }
+            return JsonEx(model);
         }
 
         [HttpPost, Route("classes")]
@@ -91,8 +98,8 @@ namespace AttendanceSystem.Controllers
         [HttpPost, Route("classes/drop/{classId}")]
         public IHttpActionResult DropClass([FromUri]int classId)
         {
-            var ticket = Logic.RegisterClass(CurrentStudent.Id, classId);
-            return JsonEx(ticket);
+            Logic.DropClass(CurrentStudent.Id, classId);
+            return Ok();
         }
 
         [HttpGet, Route("qrCode/{classId}")]
@@ -106,11 +113,20 @@ namespace AttendanceSystem.Controllers
         }
 
         [HttpPost, Route("qrCode/{classId}")]
-        public IHttpActionResult CheckQrCode([FromUri]int classId, [FromUri]int studentId, [FromBody] QrCodeModel model)
-        {            
+        public IHttpActionResult CheckQrCode([FromUri]int classId, [FromBody] QrCodeModel model)
+        {
+            int studentId = Ticket.ExtractStudentId(model.QrCode);
+            if (studentId != CurrentStudent.Id)
+            {
+                return JsonEx(new
+                {
+                    result = false
+                });
+            }
+
             return JsonEx(new
             {
-                result = Logic.CheckQrCode(CurrentStudent.Id, classId, model.QrCode)
+                result = Logic.CheckQrCode(studentId, classId, model.QrCode)
             });
         }
     }

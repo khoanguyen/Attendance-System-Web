@@ -207,6 +207,7 @@
     <Compile Include="Models\LogicModel\LoginLogicModel.cs" />
     <Compile Include="Models\LogicModel\StudentLogicModel.cs" />
     <Compile Include="Models\LogicModel\QrCodeModel.cs" />
+    <Compile Include="Models\LogicModel\TicketModel.cs" />
     <Compile Include="Models\LoginRequestType.cs" />
     <Compile Include="Models\MenuLinkModel.cs" />
     <Compile Include="Models\Student.cs">

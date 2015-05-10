@@ -47,8 +47,8 @@ namespace AttendanceSystem.Controllers
                 Logic.GetStudent(token.Username) :
                 null;
 
-            if (result == null)
-                throw new InvalidTokenException();
+            //if (result == null)
+            //    throw new InvalidTokenException();
             return result;
         }
     }

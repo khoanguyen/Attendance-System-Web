@@ -32,7 +32,7 @@ namespace AttendanceSystem
             config.Services.Replace(typeof(IExceptionHandler), new ApiExceptionHandler());
 
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
-            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            //config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;            
         }
     }

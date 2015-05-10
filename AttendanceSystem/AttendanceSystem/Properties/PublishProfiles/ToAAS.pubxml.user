@@ -14,13 +14,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/11/2015 02:27:01</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>05/09/2015 22:04:00</publishTime>
+      <publishTime>05/10/2015 18:30:20</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/05/2015 04:16:50</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>04/05/2015 04:16:50</publishTime>
+    </File>
+    <File Include="bin/Gma.QrCodeNet.Encoding.dll">
+      <publishTime>05/10/2015 13:36:06</publishTime>
     </File>
     <File Include="bin/key.private">
       <publishTime>04/11/2015 03:10:56</publishTime>
@@ -110,10 +113,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Models/AASContext.edmx.diagram">
-      <publishTime>05/05/2015 15:48:47</publishTime>
+      <publishTime>05/10/2015 17:22:42</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>04/26/2015 10:31:32</publishTime>
+      <publishTime>05/10/2015 13:36:07</publishTime>
     </File>
     <File Include="Scripts/bootstrap-datetimepicker.js">
       <publishTime>05/09/2015 09:57:29</publishTime>
@@ -203,7 +206,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Views/AASStudent/Index.cshtml">
-      <publishTime>05/06/2015 13:51:02</publishTime>
+      <publishTime>05/10/2015 14:49:43</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>02/09/2015 03:12:07</publishTime>
@@ -230,7 +233,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/09/2015 22:04:03</publishTime>
+      <publishTime>05/10/2015 16:31:52</publishTime>
     </File>
   </ItemGroup>
 </Project>
