@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AttendanceSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,10 @@ namespace AttendanceSystem.Controllers
     public class AASErrorController : Controller
     {
         // GET: AASAuthorization
-        public ActionResult Index()
+
+        public ActionResult Index(ErrorMessageModel error)
         {
-            return View();
+            return View(error);
         }
 
         public ViewResult Authorization()

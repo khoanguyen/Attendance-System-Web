@@ -51,9 +51,9 @@ namespace AttendanceSystem.Models
                         Id = 4,
                         Link = new LinkModel("Add new", ""), 
                         ChildLinks = new List<LinkModel>() {
-                            new LinkModel("New Student Account", ""),
-                            new LinkModel("New Admin Account", ""),
-                            new LinkModel("New Course", "")
+                            new LinkModel("New Student Account", "/aasadmin/student"),
+                            new LinkModel("New Admin Account", "/aasadmin/addadmin"),
+                            new LinkModel("New Course", "/aasadmin/course")
                         }
                     });
                     break;

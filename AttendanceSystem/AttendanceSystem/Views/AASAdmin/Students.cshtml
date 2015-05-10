@@ -1,4 +1,31 @@
-﻿
+﻿@model IEnumerable<AttendanceSystem.Models.Student>
 @section BodySection{
-    <h4>Coming soon . . .</h4>    
+    <div class="panel panel-primary">
+    <div class="panel-heading">Courses</div>
+    <div class="panel-body">
+        <a href="/aasadmin/student" class="btn btn-primary">New Student</a>
+    </div>
+    <table class="table">
+        <thead class="bg-info">
+            <tr>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Status</th>
+                <th>Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ToArray())
+            {
+                <tr>
+                    <td><a href="/aasadmin/course/@item.Id">@item.Email</a></td>
+                    <td>@item.DisplayName</td>
+                    <td>@item.Status</td>
+                    <td><a href="/aasadmin/student/@item.Id"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
 }

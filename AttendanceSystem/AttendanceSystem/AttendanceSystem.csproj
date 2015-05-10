@@ -197,6 +197,7 @@
     <Compile Include="Models\LogicModel\ClassLogicModel.cs" />
     <Compile Include="Models\LogicModel\ClassSessionLogicModel.cs" />
     <Compile Include="Models\LogicModel\LoginLogicModel.cs" />
+    <Compile Include="Models\LogicModel\StudentLogicModel.cs" />
     <Compile Include="Models\LoginRequestType.cs" />
     <Compile Include="Models\MenuLinkModel.cs" />
     <Compile Include="Models\Student.cs">
@@ -289,6 +290,7 @@
     <Content Include="Views\AASError\Index.cshtml" />
     <Content Include="Views\AASAdmin\Admins.cshtml" />
     <Content Include="Views\AASError\Authorization.cshtml" />
+    <Content Include="Views\AASAdmin\Student.cshtml" />
     <None Include="Web.SunnyDev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

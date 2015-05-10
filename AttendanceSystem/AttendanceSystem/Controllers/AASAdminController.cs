@@ -23,7 +23,7 @@ namespace AttendanceSystem.Controllers
         {
             using (var client = SetupClientAndSetMenu(1))
             {
-                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.allClassesUrl;
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.AllClassesUrl;
                 var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -52,7 +52,7 @@ namespace AttendanceSystem.Controllers
             }
             using (var client = SetupClientAndSetMenu(1))
             {
-                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, id.Value.ToString());                
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.ClassByIdUrl, id.Value.ToString());                
                 var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,8 +76,8 @@ namespace AttendanceSystem.Controllers
                 using (var client = SetupClientAndSetMenu(1))
                 {
 
-                    var url = ApiUriHelper.GetBaseUri() + (course.Id == 0 ? ApiUriHelper.allClassesUrl :
-                              ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, course.Id.ToString()));
+                    var url = ApiUriHelper.GetBaseUri() + (course.Id == 0 ? ApiUriHelper.AllClassesUrl :
+                              ApiUriHelper.ComposeUrl(ApiUriHelper.ClassByIdUrl, course.Id.ToString()));
 
                     var response = (course.Id == 0) ? await client.PostAsJsonAsync<ClassLogicModel>(url, course) :
                                                           await client.PutAsJsonAsync<ClassLogicModel>(url, course);
@@ -102,7 +102,7 @@ namespace AttendanceSystem.Controllers
         {
             using (var client = SetupClientAndSetMenu(1))
             {
-                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.classByIdUrl, id.ToString());
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.ClassByIdUrl, id.ToString());
                 try
                 {
                     var response = await client.DeleteAsync(url);

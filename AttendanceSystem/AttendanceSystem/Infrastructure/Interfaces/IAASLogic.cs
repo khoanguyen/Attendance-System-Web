@@ -27,5 +27,7 @@ namespace AttendanceSystem.Infrastructure.Interfaces
         void UpdateAdmin(Admin admin);
 
         Student GetStudent(string email);
+        IEnumerable<Student> GetStudents();
+        int AddStudent(Student student);
     }
 }
