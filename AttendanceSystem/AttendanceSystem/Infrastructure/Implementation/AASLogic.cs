@@ -201,7 +201,7 @@ namespace AttendanceSystem.Infrastructure.Implementation
                 var classObj = context.Classes.FirstOrDefault(c => c.Id == id);
                 if (classObj != null)
                 {
-                    context.Classes.Remove(classObj);
+                    classObj.IsArchived = true;
                     context.SaveChanges();
                 }
                 else
@@ -389,10 +389,13 @@ namespace AttendanceSystem.Infrastructure.Implementation
             {
                 var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
                 if (ticket != null)
-                { 
+                {
+                    var tid = ticket.Id;
+                    var records = context.AttendanceRecords.Where(r => r.TicketId == tid);
+                    foreach (var r in records) context.AttendanceRecords.Remove(r);
                     context.Tickets.Remove(ticket);
                     context.SaveChanges();
-                }               
+                }
             }
         }
 

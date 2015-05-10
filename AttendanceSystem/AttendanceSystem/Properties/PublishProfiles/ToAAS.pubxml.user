@@ -14,7 +14,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/11/2015 02:27:01</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>05/10/2015 23:39:49</publishTime>
+      <publishTime>05/11/2015 02:19:02</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/05/2015 04:16:50</publishTime>
@@ -185,7 +185,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/09/2015 22:01:13</publishTime>
     </File>
     <File Include="Views/AASAdmin/Courses.cshtml">
-      <publishTime>05/09/2015 09:57:29</publishTime>
+      <publishTime>05/10/2015 23:47:35</publishTime>
     </File>
     <File Include="Views/AASAdmin/Index.cshtml">
       <publishTime>05/06/2015 13:51:02</publishTime>
@@ -194,13 +194,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASAdmin/Students.cshtml">
-      <publishTime>05/10/2015 18:34:57</publishTime>
+      <publishTime>05/10/2015 23:47:35</publishTime>
     </File>
     <File Include="Views/AASError/Authorization.cshtml">
       <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASError/Index.cshtml">
-      <publishTime>05/06/2015 13:51:02</publishTime>
+      <publishTime>05/10/2015 23:47:35</publishTime>
     </File>
     <File Include="Views/AASLogin/ChangePassword.cshtml">
       <publishTime>05/06/2015 13:51:02</publishTime>
@@ -209,7 +209,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASStudent/Index.cshtml">
-      <publishTime>05/10/2015 14:49:43</publishTime>
+      <publishTime>05/10/2015 23:47:35</publishTime>
+    </File>
+    <File Include="Views/AASStudent/RegisteredCourses.cshtml">
+      <publishTime>05/10/2015 23:47:35</publishTime>
+    </File>
+    <File Include="Views/AASStudent/ViewCourse.cshtml">
+      <publishTime>05/10/2015 23:47:35</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>02/09/2015 03:12:07</publishTime>
@@ -236,7 +242,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/10/2015 20:37:52</publishTime>
+      <publishTime>05/11/2015 00:02:39</publishTime>
     </File>
   </ItemGroup>
 </Project>
