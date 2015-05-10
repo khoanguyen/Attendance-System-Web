@@ -14,7 +14,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/11/2015 02:27:01</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>05/05/2015 12:03:47</publishTime>
+      <publishTime>05/09/2015 22:04:00</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/05/2015 04:16:50</publishTime>
@@ -67,14 +67,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/WebGrease.dll">
       <publishTime>02/11/2015 02:27:01</publishTime>
     </File>
+    <File Include="Content/bootstrap-datetimepicker.css">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Content/bootstrap-datetimepicker.min.css">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>02/11/2015 02:29:35</publishTime>
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
-      <publishTime>02/11/2015 02:30:09</publishTime>
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Content/Images/facebook_style_loader.gif">
+      <publishTime>05/09/2015 22:01:13</publishTime>
+    </File>
+    <File Include="Content/Images/favicon-32x32.png">
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>02/09/2015 03:12:07</publishTime>
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>02/09/2015 03:12:07</publishTime>
@@ -95,16 +110,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Models/AASContext.edmx.diagram">
-      <publishTime>05/05/2015 11:24:24</publishTime>
+      <publishTime>05/05/2015 15:48:47</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>04/26/2015 10:31:32</publishTime>
     </File>
+    <File Include="Scripts/bootstrap-datetimepicker.js">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-datetimepicker.min.js">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
     <File Include="Scripts/bootstrap.js">
-      <publishTime>02/09/2015 03:12:09</publishTime>
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
-      <publishTime>02/09/2015 03:12:09</publishTime>
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Scripts/course-scripts.js">
+      <publishTime>05/09/2015 22:01:13</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>02/09/2015 03:12:10</publishTime>
@@ -127,8 +151,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
       <publishTime>02/09/2015 03:12:13</publishTime>
     </File>
+    <File Include="Scripts/knockout-3.3.0.js">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
     <File Include="Scripts/modernizr-2.6.2.js">
       <publishTime>02/09/2015 03:12:12</publishTime>
+    </File>
+    <File Include="Scripts/moment.min.js">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Scripts/npm.js">
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Scripts/respond.js">
       <publishTime>02/09/2015 03:12:13</publishTime>
@@ -138,6 +171,39 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/_references.js">
       <publishTime>02/09/2015 03:12:12</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/About.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/Admins.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/Course.cshtml">
+      <publishTime>05/09/2015 22:01:13</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/Courses.cshtml">
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/Index.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASAdmin/Students.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASError/Authorization.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASError/Index.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASLogin/ChangePassword.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASLogin/Index.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
+    </File>
+    <File Include="Views/AASStudent/Index.cshtml">
+      <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>02/09/2015 03:12:07</publishTime>
@@ -152,7 +218,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/11/2015 02:31:03</publishTime>
+      <publishTime>05/09/2015 09:57:29</publishTime>
+    </File>
+    <File Include="Views/Shared/_MainMenu.cshtml">
+      <publishTime>05/09/2015 09:57:29</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>02/09/2015 03:12:07</publishTime>
@@ -161,7 +230,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/05/2015 11:58:01</publishTime>
+      <publishTime>05/09/2015 22:04:03</publishTime>
     </File>
   </ItemGroup>
 </Project>
