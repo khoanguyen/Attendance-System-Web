@@ -1,20 +1,166 @@
 ﻿using AttendanceSystem.Infrastructure.Filters;
+using AttendanceSystem.Infrastructure.Utils;
 using AttendanceSystem.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace AttendanceSystem.Controllers
 {
     [UserSessionFilter(UserType=LoginRequestType.StudentLogin)]
     public class AASStudentController : Controller
     {
+        private string _xchangeMessage = "_xchangeMassage";
         // GET: AASStudent
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            using (var client = SetupClientAndSetMenu(1))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.GetAvailableClassesUrl;
+                                    
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = await response.Content.ReadAsStringAsync();
+                        var serializer = new JavaScriptSerializer();
+                        var courses = serializer.Deserialize<List<Class>>(data);
+                        return View(courses);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "error");
+                    }
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction("index", "error");
+                }
+            }
+        }
+
+        public async Task<ActionResult> RegisteredCourses()
+        {
+            using (var client = SetupClientAndSetMenu(2))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.GetRegisteredClassesUrl;
+
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = await response.Content.ReadAsStringAsync();
+                        var serializer = new JavaScriptSerializer();
+                        var courses = serializer.Deserialize<List<Class>>(data);
+                        return View(courses);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "error");
+                    }
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction("index", "error");
+                }
+            }
+        }
+
+        public async Task<ActionResult> RegisterCourse(int id)
+        {
+            using (var client = SetupClientAndSetMenu(2))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.RegisterClassUrl, id.ToString());
+                try
+                {
+                    var response = await client.PostAsJsonAsync(url, id);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsByteArrayAsync().Result;
+                        Session[_xchangeMessage] = "You have just successfully registered for a course.";
+                        return RedirectToAction("registeredcourse");
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "aaserror");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("index", "aaserror");
+                }
+            }
+        }
+
+        public async Task<ActionResult> DropCourse(int id)
+        {
+            using (var client = SetupClientAndSetMenu(2))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.DropClassUrl, id.ToString());
+                try
+                {
+                    var response = await client.PostAsJsonAsync(url, id);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsByteArrayAsync().Result;
+                        Session[_xchangeMessage] = "You have just successfully drop a course.";
+                        return RedirectToAction("registeredcourse");
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "aaserror");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("index", "aaserror");
+                }
+            }
+        }
+
+        public async Task<ActionResult> ViewCode(int id)
+        {
+            using (var client = SetupClientAndSetMenu(2))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.DropClassUrl, id.ToString());
+                try
+                {
+                    var response = await client.PostAsJsonAsync(url, id);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsByteArrayAsync().Result;
+                        return RedirectToAction("registeredcourse");
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "aaserror");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("index", "aaserror");
+                }
+            }
+        }
+
+        private HttpClient SetupClientAndSetMenu(int? activeMenu, int clientTimeOutInMinute = 2)
+        {
+            var session = SessionHelper.GetSession<UserSession>(UserSession.LoggedinUserSession);
+            if (activeMenu.HasValue) session.SetMenuActive(activeMenu.Value);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("aas-accesskey", session.TokenString);
+            client.Timeout = new TimeSpan(0, clientTimeOutInMinute, 0);
+            return client;
         }
     }
 }
