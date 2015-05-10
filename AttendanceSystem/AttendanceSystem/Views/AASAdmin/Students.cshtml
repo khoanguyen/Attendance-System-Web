@@ -10,7 +10,6 @@
             <tr>
                 <th>Email</th>
                 <th>Display Name</th>
-                <th>Status</th>
                 <th>Command</th>
             </tr>
         </thead>
@@ -18,10 +17,9 @@
             @foreach (var item in Model.ToArray())
             {
                 <tr>
-                    <td><a href="/aasadmin/course/@item.Id">@item.Email</a></td>
+                    <td><a href="#">@item.Email</a></td>
                     <td>@item.DisplayName</td>
-                    <td>@item.Status</td>
-                    <td><a href="/aasadmin/student/@item.Id"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                    <td><a href="#"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
                 </tr>
             }
 

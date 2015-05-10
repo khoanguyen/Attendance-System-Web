@@ -24,7 +24,7 @@ namespace AttendanceSystem.Controllers
                 try
                 {
                     var response = await client.GetAsync(url);
-                    if (1==2)
+                    if (response.IsSuccessStatusCode)
                     {
                         var data = await response.Content.ReadAsStringAsync();
                         var serializer = new JavaScriptSerializer();
@@ -36,7 +36,7 @@ namespace AttendanceSystem.Controllers
                         return RedirectToAction("Index", "Error");
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     return RedirectToAction("Index", "Error");
                 }                        

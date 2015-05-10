@@ -43,6 +43,10 @@ namespace AttendanceSystem.Models
         {
             switch (type)
             {
+                case LoginRequestType.StudentLogin:
+                    MainMenu.Add(new MenuLinkModel() { Id = 1, Link = new LinkModel("Available Courses", "/aasstudent"), IsActive = true });
+                    MainMenu.Add(new MenuLinkModel() { Id = 2, Link = new LinkModel("Registerd Courses", "/aasstudent/registeredcourses") });
+                    break;
                 case LoginRequestType.AdminLogin:
                     MainMenu.Add(new MenuLinkModel() { Id = 1, Link = new LinkModel("Courses", "/aasadmin/courses"), IsActive = true });
                     MainMenu.Add(new MenuLinkModel() { Id = 2, Link = new LinkModel("Students", "/aasadmin/students") });
@@ -52,7 +56,7 @@ namespace AttendanceSystem.Models
                         Link = new LinkModel("Add new", ""), 
                         ChildLinks = new List<LinkModel>() {
                             new LinkModel("New Student Account", "/aasadmin/student"),
-                            new LinkModel("New Admin Account", "/aasadmin/addadmin"),
+                            //new LinkModel("New Admin Account", "/aasadmin/addadmin"),
                             new LinkModel("New Course", "/aasadmin/course")
                         }
                     });

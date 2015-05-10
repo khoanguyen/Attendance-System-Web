@@ -1,6 +1,48 @@
-﻿
+﻿@model List<AttendanceSystem.Models.Class>
+
 @section BodySection{
-    <h3>This section is for student</h3>
-    <h4>Coming soon. . .</h4>
-    <img src="http://localhost:54782/api/business/qrCode/1015" />
-     }>
+   @if (!AttendanceSystem.Infrastructure.Utils.SessionHelper.IsSessionNull(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession))
+   {
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Message: </strong> @(AttendanceSystem.Infrastructure.Utils.SessionHelper.GetSession<string>(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession))
+    </div>
+       AttendanceSystem.Infrastructure.Utils.SessionHelper.ClearSession(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession);
+   }
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Available Courses</div>
+    <div class="panel-body">
+        <table class="table">
+            <thead class="bg-info">
+                <tr>
+                    <th>Name</th>
+                    <th>Professor</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Excused time</th>
+                    <th>Register</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td class="alert alert-info" colspan="6">You have no course available</td></tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a href="/aasstudent/viewcourse/@item.Id">@item.Name</a></td>
+                        <td>@item.ProfessorName</td>
+                        <td>@item.StartDate.ToString("dd/MMM/yyyy")</td>
+                        <td>@item.EndDate.ToString("dd/MMM/yyyy")</td>
+                        <td>@item.ExcusedTime</td>
+                        <td><a href="/aasstudent/viewcourse/@item.Id"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>    
+</div>
+}

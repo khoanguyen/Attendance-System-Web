@@ -23,8 +23,8 @@
                 <tr>
                     <td><a href="/aasadmin/course/@item.Id">@item.Name</a></td>
                     <td>@item.ProfessorName</td>
-                    <td>@item.StartDate.ToShortDateString()</td>
-                    <td>@item.EndDate.ToShortDateString()</td>
+                    <td>@item.StartDate.ToString("dd/MMM/yyyy")</td>
+                    <td>@item.EndDate.ToString("dd/MMM/yyyy")</td>
                     <td>@item.ExcusedTime</td>
                     <td><a href="/aasadmin/course/@item.Id"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
                 </tr>

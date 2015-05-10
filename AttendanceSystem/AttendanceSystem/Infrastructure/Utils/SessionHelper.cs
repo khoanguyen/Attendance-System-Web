@@ -7,6 +7,7 @@ namespace AttendanceSystem.Infrastructure.Utils
 {
     public class SessionHelper
     {
+        public const string XChangeMessageSession = "XChangeMessageSession";
 
         public static void SetSession<T>(string sessionName, T value)
         {
