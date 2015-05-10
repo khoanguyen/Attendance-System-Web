@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Infrastructure.Filters;
 using AttendanceSystem.Infrastructure.Utils;
 using AttendanceSystem.Models;
+using AttendanceSystem.Models.LogicModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace AttendanceSystem.Controllers
     [UserSessionFilter(UserType=LoginRequestType.StudentLogin)]
     public class AASStudentController : Controller
     {
-        private string _xchangeMessage = "_xchangeMassage";
         // GET: AASStudent
         public async Task<ActionResult> Index()
         {
@@ -65,17 +65,44 @@ namespace AttendanceSystem.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("index", "error");
+                        return RedirectToAction("index", "aaserror");
                     }
                 }
                 catch (Exception e)
                 {
-                    return RedirectToAction("index", "error");
+                    return RedirectToAction("index", "aaserror");
                 }
             }
         }
 
-        public async Task<ActionResult> RegisterCourse(int id)
+        public async Task<ActionResult> ViewCourse(int id)
+        {
+            using (var client = SetupClientAndSetMenu(null))
+            {
+                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.ClassByIdUrl, id.ToString());
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var course = JsonConvert.DeserializeObject<ClassLogicModel>(data);
+                        if (course.OwnedTicket != null && course.OwnedTicket.QrCode != null)
+                        {
+                            course.OwnedTicket.QrCode = @"data:image/png;base64," + course.OwnedTicket.QrCode;
+                        }
+                        return View(course);
+                    }
+                    return RedirectToAction("index", "aaserror");
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("index", "aaserror");
+                }
+            }
+        }
+
+        public async Task<ActionResult> RegisterCourse(int id, string courseName = "")
         {
             using (var client = SetupClientAndSetMenu(2))
             {
@@ -86,8 +113,8 @@ namespace AttendanceSystem.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         var data = response.Content.ReadAsByteArrayAsync().Result;
-                        Session[_xchangeMessage] = "You have just successfully registered for a course.";
-                        return RedirectToAction("registeredcourse");
+                        Session[SessionHelper.XChangeMessageSession] = String.Format("You have just successfully registered the {0} course.", courseName);
+                        return RedirectToAction("registeredcourses");
                     }
                     else
                     {
@@ -101,7 +128,7 @@ namespace AttendanceSystem.Controllers
             }
         }
 
-        public async Task<ActionResult> DropCourse(int id)
+        public async Task<ActionResult> DropCourse(int id, string courseName = "")
         {
             using (var client = SetupClientAndSetMenu(2))
             {
@@ -112,33 +139,8 @@ namespace AttendanceSystem.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         var data = response.Content.ReadAsByteArrayAsync().Result;
-                        Session[_xchangeMessage] = "You have just successfully drop a course.";
-                        return RedirectToAction("registeredcourse");
-                    }
-                    else
-                    {
-                        return RedirectToAction("index", "aaserror");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return RedirectToAction("index", "aaserror");
-                }
-            }
-        }
-
-        public async Task<ActionResult> ViewCode(int id)
-        {
-            using (var client = SetupClientAndSetMenu(2))
-            {
-                var url = ApiUriHelper.GetBaseUri() + ApiUriHelper.ComposeUrl(ApiUriHelper.DropClassUrl, id.ToString());
-                try
-                {
-                    var response = await client.PostAsJsonAsync(url, id);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var data = response.Content.ReadAsByteArrayAsync().Result;
-                        return RedirectToAction("registeredcourse");
+                        Session[SessionHelper.XChangeMessageSession] = String.Format("You have just successfully dropped the {0} course.", courseName);
+                        return RedirectToAction("registeredcourses");
                     }
                     else
                     {

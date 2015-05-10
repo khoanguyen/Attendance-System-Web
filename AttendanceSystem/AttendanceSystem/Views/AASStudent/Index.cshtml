@@ -1,13 +1,14 @@
 ﻿@model List<AttendanceSystem.Models.Class>
 
 @section BodySection{
-    @if (!AttendanceSystem.Infrastructure.Utils.SessionHelper.IsSessionNull("_xchangeMessage"))
-    {
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Message: </strong> @(AttendanceSystem.Infrastructure.Utils.SessionHelper.GetSession<string>("_xchangeMessage"))
-        </div>
-    }
+   @if (!AttendanceSystem.Infrastructure.Utils.SessionHelper.IsSessionNull(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession))
+   {
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Message: </strong> @(AttendanceSystem.Infrastructure.Utils.SessionHelper.GetSession<string>(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession))
+    </div>
+       AttendanceSystem.Infrastructure.Utils.SessionHelper.ClearSession(AttendanceSystem.Infrastructure.Utils.SessionHelper.XChangeMessageSession);
+   }
 
 <div class="panel panel-primary">
     <div class="panel-heading">Available Courses</div>
@@ -31,12 +32,12 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td><a href="/aasstudent/registercourse/@item.Id">@item.Name</a></td>
+                        <td><a href="/aasstudent/viewcourse/@item.Id">@item.Name</a></td>
                         <td>@item.ProfessorName</td>
                         <td>@item.StartDate.ToString("dd/MMM/yyyy")</td>
                         <td>@item.EndDate.ToString("dd/MMM/yyyy")</td>
                         <td>@item.ExcusedTime</td>
-                        <td><a href="/aasstudent/registercourse/@item.Id"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                        <td><a href="/aasstudent/viewcourse/@item.Id"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                     </tr>
                 }
 

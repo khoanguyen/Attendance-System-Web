@@ -302,8 +302,8 @@
     <Content Include="Views\AASAdmin\Admins.cshtml" />
     <Content Include="Views\AASError\Authorization.cshtml" />
     <Content Include="Views\AASAdmin\Student.cshtml" />
-    <Content Include="Views\AASStudent\RegisteredCourse.cshtml" />
-    <Content Include="Views\AASStudent\RegisterCourse.cshtml" />
+    <Content Include="Views\AASStudent\RegisteredCourses.cshtml" />
+    <Content Include="Views\AASStudent\ViewCourse.cshtml" />
     <None Include="Web.SunnyDev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
