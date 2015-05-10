@@ -17,13 +17,13 @@ namespace AttendanceSystem.Infrastructure.Errors
 
         public HttpRequestMessage Request { get; private set; }
 
-        public BaseAASException Exception { get; private set; }
+        public String Message { get; private set; }
 
-        public ApiErrorActionResult(HttpRequestMessage request, HttpStatusCode statusCode, BaseAASException exception)
+        public ApiErrorActionResult(HttpRequestMessage request, HttpStatusCode statusCode, String message)
         {
             Request = request;
             StatusCode = statusCode;
-            Exception = exception;
+            Message = message;
         }
 
         public Task<System.Net.Http.HttpResponseMessage> ExecuteAsync(System.Threading.CancellationToken cancellationToken)
@@ -34,8 +34,8 @@ namespace AttendanceSystem.Infrastructure.Errors
             {                
                 error = new
                 {
-                    code = Exception.ErrorCode,
-                    message = Exception.Message
+                    code = 0,
+                    message = Message
                 }
             }),
             Encoding.UTF8,

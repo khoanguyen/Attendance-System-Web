@@ -116,14 +116,7 @@ namespace AttendanceSystem.Controllers
         public IHttpActionResult CheckQrCode([FromUri]int classId, [FromBody] QrCodeModel model)
         {
             int studentId = Ticket.ExtractStudentId(model.QrCode);
-            if (studentId != CurrentStudent.Id)
-            {
-                return JsonEx(new
-                {
-                    result = false
-                });
-            }
-
+            
             return JsonEx(new
             {
                 result = Logic.CheckQrCode(studentId, classId, model.QrCode)

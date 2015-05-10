@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -17,11 +18,11 @@ namespace AttendanceSystem.Infrastructure.Errors
             if (context.Exception is BaseAASException)
             {
                 var apiException = context.Exception as BaseAASException;
-                context.Result = new ApiErrorActionResult(context.Request, apiException.HttpCode, apiException);                
+                context.Result = new ApiErrorActionResult(context.Request, apiException.HttpCode, apiException.Message);                
             }
             else
             {
-                base.Handle(context);
+                context.Result = new ApiErrorActionResult(context.Request, HttpStatusCode.InternalServerError, context.Exception.ToString());   
             }
         }
     }

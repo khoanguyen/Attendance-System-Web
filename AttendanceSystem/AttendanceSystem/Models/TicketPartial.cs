@@ -55,7 +55,7 @@ namespace AttendanceSystem.Models
             var data = Convert.FromBase64String(incoming);
             var json = Encoding.ASCII.GetString(data);
             var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            return dic.ContainsKey("id") ? 0 : int.Parse(dic["id"]);
+            return dic.ContainsKey("id") ? int.Parse(dic["id"]) : 0;
         }
 
         public byte[] ComposeSignedData()
@@ -79,7 +79,7 @@ namespace AttendanceSystem.Models
         {
             using (var sha1 = System.Security.Cryptography.SHA1.Create())
             {
-                var data = string.Format("Student:{0}_Class:{1}", this.StudentId, this.QrCode);
+                var data = string.Format("Student:{0}_Class:{1}", this.StudentId, this.ClassId);
                 var rgb = _encoding.GetBytes(data);
                 return sha1.ComputeHash(rgb);
             }

@@ -414,13 +414,53 @@ namespace AttendanceSystem.Infrastructure.Implementation
         {
             using (var context = new AASDBContext())
             {
+                var result = false;
                 var ticket = context.Tickets.SingleOrDefault(t => t.StudentId == studentId && t.ClassId == classId);
                 if (ticket != null)
                 {
-                    return ticket.Verify(qrCode);
+                    result = ticket.Verify(qrCode);
+                    if (result)
+                    {
+                        var classObj = context.Classes.Include("ClassSessions").FirstOrDefault(c => c.Id == classId);
+                        var now = DateTime.Now;
+                        var dateNow = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+                        if (dateNow < classObj.StartDate || dateNow > classObj.EndDate) return false;
+                        var currentWeekDay = dateNow.DayOfWeek.ToString().Substring(0, 3).ToLower();
+                        var session = classObj.ClassSessions.FirstOrDefault(s => s.Weekday.ToLower() == currentWeekDay);
+                        if (session != null)
+                        {
+                            var currentTime = new TimeSpan(now.Hour, now.Minute, now.Second);
+                            var startTime = session.StartTime;
+                            var endTime = (classObj.ExcusedTime != null) ? startTime + classObj.ExcusedTime.Value : session.EndTime;
+                            if (session.StartTime > currentTime || session.EndTime < currentTime) return false;                            
+                            
+                            var dateTimeOffsetNow = DateTimeOffset.Now;
+
+                            var sessionId = session.Id;
+                            var record = context.AttendanceRecords.FirstOrDefault(r => r.SessionId == sessionId &&
+                                                                                       r.CheckinTime <= dateTimeOffsetNow);
+                            if (record == null)
+                            {
+                                record = new AttendanceRecord
+                                {
+                                    CheckinTime = dateTimeOffsetNow,
+                                    RecordDate = DateTime.Now,
+                                    SessionId = session.Id,
+                                    StudentId = studentId,
+                                    TicketId = ticket.Id
+                                };
+                                context.AttendanceRecords.Add(record);
+                                context.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }                        
+                    }
                 }
 
-                return false;
+                return result;
             }
         }
 
