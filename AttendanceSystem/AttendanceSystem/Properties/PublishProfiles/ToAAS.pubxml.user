@@ -14,7 +14,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/11/2015 02:27:01</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>05/10/2015 18:30:20</publishTime>
+      <publishTime>05/10/2015 20:37:49</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/05/2015 04:16:50</publishTime>
@@ -173,7 +173,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:13</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>02/09/2015 03:12:12</publishTime>
+      <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASAdmin/About.cshtml">
       <publishTime>05/06/2015 13:51:02</publishTime>
@@ -190,11 +190,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/AASAdmin/Index.cshtml">
       <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
+    <File Include="Views/AASAdmin/Student.cshtml">
+      <publishTime>05/10/2015 18:34:57</publishTime>
+    </File>
     <File Include="Views/AASAdmin/Students.cshtml">
-      <publishTime>05/06/2015 13:51:02</publishTime>
+      <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASError/Authorization.cshtml">
-      <publishTime>05/06/2015 13:51:02</publishTime>
+      <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASError/Index.cshtml">
       <publishTime>05/06/2015 13:51:02</publishTime>
@@ -203,7 +206,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/06/2015 13:51:02</publishTime>
     </File>
     <File Include="Views/AASLogin/Index.cshtml">
-      <publishTime>05/06/2015 13:51:02</publishTime>
+      <publishTime>05/10/2015 18:34:57</publishTime>
     </File>
     <File Include="Views/AASStudent/Index.cshtml">
       <publishTime>05/10/2015 14:49:43</publishTime>
@@ -233,7 +236,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/09/2015 03:12:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/10/2015 16:31:52</publishTime>
+      <publishTime>05/10/2015 20:37:52</publishTime>
     </File>
   </ItemGroup>
 </Project>
